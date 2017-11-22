@@ -50,6 +50,46 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2017-11-23T00:03:30.000Z"><a href="/2017/11/23/latex-with-emacs/">2017-11-23</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2017/11/23/latex-with-emacs/">latex-with-emacs</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Install-necessary-packages"><a href="#Install-necessary-packages" class="headerlink" title="Install necessary packages"></a>Install necessary packages</h1><p>Install auctex (texmaker is another great option).</p>
+<pre><code>$ apt install auctex texlive texlive-latex-extra 
+</code></pre><h1 id="AUCTEX"><a href="#AUCTEX" class="headerlink" title="AUCTEX"></a>AUCTEX</h1><p>auctex should be loaded automatically. If not, start it manually by<br>    M-x tex-mode<br>or, add the followings to ~/.emacs:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(setq TeX-auto-save t)</div><div class="line">(setq TeX-parse-self t)</div><div class="line">(setq TeX-save-query nil)</div><div class="line">;(setq TeX-PDF-mode t)</div></pre></td></tr></table></figure></p>
+<h1 id="For-USENIX-papers"><a href="#For-USENIX-papers" class="headerlink" title="For USENIX papers,"></a>For USENIX papers,</h1><ul>
+<li><a href="https://www.usenix.org/legacy/events/sec06/cfp/submit-sample.tex" target="_blank" rel="external">latex sample</a></li>
+<li><a href="https://www.usenix.org/conferences/author-resources/paper-templates" target="_blank" rel="external">latex template</a></li>
+</ul>
+<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><p>for conveniences, </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"># SRC is the main latex file (file name only)</div><div class="line">SRC = paper</div><div class="line"></div><div class="line">all:	pdf</div><div class="line">	evince $&#123;SRC&#125;.pdf &amp;</div><div class="line"></div><div class="line"># rm -f $&#123;SRC&#125;.&#123;aux,bbl,blg,dvi,ent,log,pdf,ps&#125; doesn&apos;t work, weird</div><div class="line">clean:</div><div class="line">	rm -f *.aux; rm -f *.bbl; rm -f *.blg; rm -f *.dvi</div><div class="line">	rm -f *.ent; rm -f *.log; rm -f *.pdf; rm -f *.ps</div><div class="line"></div><div class="line">pdf:	dvi</div><div class="line">	dvipdf $&#123;SRC&#125;</div><div class="line"></div><div class="line">ps:	dvi</div><div class="line">	dvips -t a4 $&#123;SRC&#125;.dvi</div><div class="line"></div><div class="line">dvi:</div><div class="line">	latex $&#123;SRC&#125;</div><div class="line">	bibtex $&#123;SRC&#125;</div><div class="line">	latex $&#123;SRC&#125;</div><div class="line">	latex $&#123;SRC&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2017-11-10T06:39:56.000Z"><a href="/2017/11/10/xpath-syntax/">2017-11-10</a></time>
       
       
@@ -357,19 +397,19 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="search" name="q" results="0" placeholder="Suche">
     <input type="hidden" name="q" value="site:aintahydra.github.io">
   </form>
 </div>
 
   
 <div class="widget tag">
-  <h3 class="title">Categories</h3>
+  <h3 class="title">Kategorien</h3>
   <ul class="entry">
   
     <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
   
-    <li><a href="/categories/emacs/">emacs</a><small>1</small></li>
+    <li><a href="/categories/emacs/">emacs</a><small>2</small></li>
   
     <li><a href="/categories/python/">python</a><small>1</small></li>
   
@@ -384,13 +424,17 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
   
     <li><a href="/tags/TAGS/">TAGS</a><small>1</small></li>
   
+    <li><a href="/tags/auctex/">auctex</a><small>1</small></li>
+  
     <li><a href="/tags/crawler/">crawler</a><small>1</small></li>
   
     <li><a href="/tags/ctag/">ctag</a><small>1</small></li>
   
-    <li><a href="/tags/emacs/">emacs</a><small>1</small></li>
+    <li><a href="/tags/emacs/">emacs</a><small>2</small></li>
   
     <li><a href="/tags/etag/">etag</a><small>1</small></li>
+  
+    <li><a href="/tags/latex/">latex</a><small>1</small></li>
   
     <li><a href="/tags/python/">python</a><small>1</small></li>
   
