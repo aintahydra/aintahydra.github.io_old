@@ -3,28 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>emacs-etag | aintahydra</title>
+  <title>xpath-syntax | aintahydra</title>
   <meta name="author" content="aintahydra">
   
-  <meta name="description" content="Generating TAGS$ etags *.[chCH]
-or
-$ find . -name &amp;quot;*.[chCH]&amp;quot; -print | etags -
-Shortcuts for Navigation
-
-
-Key
-Action
-
-
-
-
-M-. RET
-go to the de">
+  <meta name="description" content="NodeEach of five elements in the following is a node:
+&amp;lt;body style=&amp;quot;peachy&amp;quot; class=&amp;quot;top&amp;quot;&amp;gt;  wassup &amp;lt;/body&amp;gt;
+A node has a t">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="emacs-etag"/>
+  <meta property="og:title" content="xpath-syntax"/>
   <meta property="og:site_name" content="aintahydra"/>
 
   
@@ -64,63 +53,81 @@ go to the de">
     <header>
       
         <div class="icon"></div>
-        <time datetime="2017-11-07T22:14:12.000Z"><a href="/2017/11/08/emacs-etag/">2017-11-08</a></time>
+        <time datetime="2017-11-10T06:39:56.000Z"><a href="/2017/11/10/xpath-syntax/">2017-11-10</a></time>
       
       
   
-    <h1 class="title">emacs-etag</h1>
+    <h1 class="title">xpath-syntax</h1>
   
 
     </header>
     <div class="entry">
       
-        <h1 id="Generating-TAGS"><a href="#Generating-TAGS" class="headerlink" title="Generating TAGS"></a>Generating TAGS</h1><pre><code>$ etags *.[chCH]
-</code></pre><p>or</p>
-<pre><code>$ find . -name &quot;*.[chCH]&quot; -print | etags -
-</code></pre><h1 id="Shortcuts-for-Navigation"><a href="#Shortcuts-for-Navigation" class="headerlink" title="Shortcuts for Navigation"></a>Shortcuts for Navigation</h1><table>
+        <h1 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h1><p>Each of five elements in the following is a node:</p>
+<pre><code>&lt;body style=&quot;peachy&quot; class=&quot;top&quot;&gt;  wassup &lt;/body&gt;
+</code></pre><p>A node has a type. Types are:</p>
+<table>
 <thead>
 <tr>
-<th>Key</th>
-<th>Action</th>
+<th>Node name</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>M-. RET</td>
-<td>go to the definition</td>
+<td>root</td>
+<td>xml itself</td>
 </tr>
 <tr>
-<td>C-u M-.</td>
-<td>(next match)</td>
+<td>element</td>
+<td>tag</td>
 </tr>
 <tr>
-<td>M-*</td>
-<td>go back to the previous position</td>
+<td>attribute</td>
+<td>attribute</td>
 </tr>
 <tr>
-<td>M-x tags-search</td>
-<td>RE-search</td>
+<td>text</td>
+<td>tag content</td>
 </tr>
 <tr>
-<td>M-x tags-query-replace</td>
+<td>namespace</td>
+<td>a tag starts with ‘xmlns’</td>
+</tr>
+<tr>
+<td>processing-instruction</td>
+<td>a tag starts with ‘&lt;?’ </td>
+</tr>
+<tr>
+<td>comment</td>
 <td>as it says</td>
-</tr>
-<tr>
-<td>M-,</td>
-<td>resume search or replace</td>
-</tr>
-<tr>
-<td>M-x tags-apropos</td>
-<td>list all tags match a RE</td>
-</tr>
-<tr>
-<td>M-x list-tags</td>
-<td>list all tags defined in the file</td>
 </tr>
 </tbody>
 </table>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref."></a>Ref.</h1><ul>
-<li><a href="https://www.emacswiki.org/emacs/EmacsTags" target="_blank" rel="external">https://www.emacswiki.org/emacs/EmacsTags</a></li>
+<h1 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h1><h2 id="an-example-XML"><a href="#an-example-XML" class="headerlink" title="an example XML"></a>an example XML</h2><p>here’s an example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line"></div><div class="line">&lt;bookstore&gt;</div><div class="line"></div><div class="line">&lt;book&gt;</div><div class="line">  &lt;title lang=&quot;en&quot;&gt;Harry Potter&lt;/title&gt;</div><div class="line">  &lt;price&gt;29.99&lt;/price&gt;</div><div class="line">&lt;/book&gt;</div><div class="line"></div><div class="line">&lt;book&gt;</div><div class="line">  &lt;title lang=&quot;en&quot;&gt;Learning XML&lt;/title&gt;</div><div class="line">  &lt;price&gt;39.95&lt;/price&gt;</div><div class="line">&lt;/book&gt;</div><div class="line"></div><div class="line">&lt;/bookstore&gt;</div></pre></td></tr></table></figure>
+<h2 id="elements"><a href="#elements" class="headerlink" title="elements"></a>elements</h2><p>All of the <bookstore><book> elements:</book></bookstore></p>
+<pre><code>bookstore//book
+</code></pre><p>All <book> elements:</book></p>
+<pre><code>//book
+</code></pre><p>Find the first <book> element:</book></p>
+<pre><code>/bookstore/book[1]
+</code></pre><p>Find <book> elements with a search condition:</book></p>
+<pre><code>/bookstore/book[price&gt;30.00]
+</code></pre><p>All the elements under <bookstore>:</bookstore></p>
+<pre><code>//
+</code></pre><h2 id="attribute-node"><a href="#attribute-node" class="headerlink" title="attribute node"></a>attribute node</h2><p>Other nodes than element nodes reqiures the ‘@’ symbol,</p>
+<p>All the ‘lang’ nodes:</p>
+<pre><code>//@lang
+</code></pre><p>All the tags that has the lang attribute:</p>
+<pre><code>//title[@lang]
+</code></pre><h2 id="text-node"><a href="#text-node" class="headerlink" title="text node"></a>text node</h2><p>All text nodes exist within the (tag) element nodes. Therefore, it must start with an element node. For example, to get the text of <title> tags:</title></p>
+<pre><code>//title/text()
+</code></pre><p>Texts of all tags:</p>
+<pre><code>//text()
+</code></pre><h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li>XPath Tutorial: <a href="https://www.w3schools.com/xml/xpath_intro.asp" target="_blank" rel="external">https://www.w3schools.com/xml/xpath_intro.asp</a></li>
+<li>Test: <a href="http://www.xpathtester.com/xpath" target="_blank" rel="external">http://www.xpathtester.com/xpath</a></li>
 </ul>
 
       
@@ -130,13 +137,13 @@ go to the de">
         
   
   <div class="categories">
-    <a href="/categories/emacs/">emacs</a>
+    <a href="/categories/ETC/">ETC</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/emacs/">emacs</a>, <a href="/tags/TAGS/">TAGS</a>, <a href="/tags/ctag/">ctag</a>, <a href="/tags/etag/">etag</a>
+    <a href="/tags/xpath/">xpath</a>
   </div>
 
         
@@ -179,7 +186,7 @@ go to the de">
   }(document, 'script', 'facebook-jssdk'));
 </script>
 
-<div class="fb-comments" data-href="http://aintahydra.github.io/2017/11/08/emacs-etag/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+<div class="fb-comments" data-href="http://aintahydra.github.io/2017/11/10/xpath-syntax/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
       
   
 </section>

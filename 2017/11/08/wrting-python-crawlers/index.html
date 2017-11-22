@@ -3,13 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>aintahydra</title>
+  <title>wrting-python-crawlers | aintahydra</title>
   <meta name="author" content="aintahydra">
+  
+  <meta name="description" content="Install required packages$ sudo apt install python-pip
+$ pip scrapy lxml
+Create a project$ scrapy startproject crawling_apt
+$  tree crawling_apt/
+craw">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="wrting-python-crawlers"/>
   <meta property="og:site_name" content="aintahydra"/>
 
   
@@ -43,106 +49,7 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2017-11-10T06:39:56.000Z"><a href="/2017/11/10/xpath-syntax/">2017-11-10</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2017/11/10/xpath-syntax/">xpath-syntax</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h1 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h1><p>Each of five elements in the following is a node:</p>
-<pre><code>&lt;body style=&quot;peachy&quot; class=&quot;top&quot;&gt;  wassup &lt;/body&gt;
-</code></pre><p>A node has a type. Types are:</p>
-<table>
-<thead>
-<tr>
-<th>Node name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>root</td>
-<td>xml itself</td>
-</tr>
-<tr>
-<td>element</td>
-<td>tag</td>
-</tr>
-<tr>
-<td>attribute</td>
-<td>attribute</td>
-</tr>
-<tr>
-<td>text</td>
-<td>tag content</td>
-</tr>
-<tr>
-<td>namespace</td>
-<td>a tag starts with ‘xmlns’</td>
-</tr>
-<tr>
-<td>processing-instruction</td>
-<td>a tag starts with ‘&lt;?’ </td>
-</tr>
-<tr>
-<td>comment</td>
-<td>as it says</td>
-</tr>
-</tbody>
-</table>
-<h1 id="Syntax"><a href="#Syntax" class="headerlink" title="Syntax"></a>Syntax</h1><h2 id="an-example-XML"><a href="#an-example-XML" class="headerlink" title="an example XML"></a>an example XML</h2><p>here’s an example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line"></div><div class="line">&lt;bookstore&gt;</div><div class="line"></div><div class="line">&lt;book&gt;</div><div class="line">  &lt;title lang=&quot;en&quot;&gt;Harry Potter&lt;/title&gt;</div><div class="line">  &lt;price&gt;29.99&lt;/price&gt;</div><div class="line">&lt;/book&gt;</div><div class="line"></div><div class="line">&lt;book&gt;</div><div class="line">  &lt;title lang=&quot;en&quot;&gt;Learning XML&lt;/title&gt;</div><div class="line">  &lt;price&gt;39.95&lt;/price&gt;</div><div class="line">&lt;/book&gt;</div><div class="line"></div><div class="line">&lt;/bookstore&gt;</div></pre></td></tr></table></figure>
-<h2 id="elements"><a href="#elements" class="headerlink" title="elements"></a>elements</h2><p>All of the <bookstore><book> elements:</book></bookstore></p>
-<pre><code>bookstore//book
-</code></pre><p>All <book> elements:</book></p>
-<pre><code>//book
-</code></pre><p>Find the first <book> element:</book></p>
-<pre><code>/bookstore/book[1]
-</code></pre><p>Find <book> elements with a search condition:</book></p>
-<pre><code>/bookstore/book[price&gt;30.00]
-</code></pre><p>All the elements under <bookstore>:</bookstore></p>
-<pre><code>//
-</code></pre><h2 id="attribute-node"><a href="#attribute-node" class="headerlink" title="attribute node"></a>attribute node</h2><p>Other nodes than element nodes reqiures the ‘@’ symbol,</p>
-<p>All the ‘lang’ nodes:</p>
-<pre><code>//@lang
-</code></pre><p>All the tags that has the lang attribute:</p>
-<pre><code>//title[@lang]
-</code></pre><h2 id="text-node"><a href="#text-node" class="headerlink" title="text node"></a>text node</h2><p>All text nodes exist within the (tag) element nodes. Therefore, it must start with an element node. For example, to get the text of <title> tags:</title></p>
-<pre><code>//title/text()
-</code></pre><p>Texts of all tags:</p>
-<pre><code>//text()
-</code></pre><h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
-<li>XPath Tutorial: <a href="https://www.w3schools.com/xml/xpath_intro.asp" target="_blank" rel="external">https://www.w3schools.com/xml/xpath_intro.asp</a></li>
-<li>Test: <a href="http://www.xpathtester.com/xpath" target="_blank" rel="external">http://www.xpathtester.com/xpath</a></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
   <div class="post-content">
     <header>
@@ -152,7 +59,7 @@
       
       
   
-    <h1 class="title"><a href="/2017/11/08/wrting-python-crawlers/">wrting-python-crawlers</a></h1>
+    <h1 class="title">wrting-python-crawlers</h1>
   
 
     </header>
@@ -217,7 +124,35 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
     <footer>
       
         
+  
+  <div class="categories">
+    <a href="/categories/python/">python</a>
+  </div>
+
         
+  
+  <div class="tags">
+    <a href="/tags/python/">python</a>, <a href="/tags/scrapy/">scrapy</a>, <a href="/tags/crawler/">crawler</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
       
       <div class="clearfix"></div>
     </footer>
@@ -225,135 +160,27 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
 </article>
 
 
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
 
-
-  <article class="post">
   
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2017-11-07T22:14:12.000Z"><a href="/2017/11/08/emacs-etag/">2017-11-08</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2017/11/08/emacs-etag/">emacs-etag</a></h1>
-  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
 
-    </header>
-    <div class="entry">
-      
-        <h1 id="Generating-TAGS"><a href="#Generating-TAGS" class="headerlink" title="Generating TAGS"></a>Generating TAGS</h1><pre><code>$ etags *.[chCH]
-</code></pre><p>or</p>
-<pre><code>$ find . -name &quot;*.[chCH]&quot; -print | etags -
-</code></pre><h1 id="Shortcuts-for-Navigation"><a href="#Shortcuts-for-Navigation" class="headerlink" title="Shortcuts for Navigation"></a>Shortcuts for Navigation</h1><table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>M-. RET</td>
-<td>go to the definition</td>
-</tr>
-<tr>
-<td>C-u M-.</td>
-<td>(next match)</td>
-</tr>
-<tr>
-<td>M-*</td>
-<td>go back to the previous position</td>
-</tr>
-<tr>
-<td>M-x tags-search</td>
-<td>RE-search</td>
-</tr>
-<tr>
-<td>M-x tags-query-replace</td>
-<td>as it says</td>
-</tr>
-<tr>
-<td>M-,</td>
-<td>resume search or replace</td>
-</tr>
-<tr>
-<td>M-x tags-apropos</td>
-<td>list all tags match a RE</td>
-</tr>
-<tr>
-<td>M-x list-tags</td>
-<td>list all tags defined in the file</td>
-</tr>
-</tbody>
-</table>
-<h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref."></a>Ref.</h1><ul>
-<li><a href="https://www.emacswiki.org/emacs/EmacsTags" target="_blank" rel="external">https://www.emacswiki.org/emacs/EmacsTags</a></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2017-11-07T12:20:50.265Z"><a href="/2017/11/07/hello-world/">2017-11-07</a></time>
-      
+<div class="fb-comments" data-href="http://aintahydra.github.io/2017/11/08/wrting-python-crawlers/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
       
   
-    <h1 class="title"><a href="/2017/11/07/hello-world/">Hello World</a></h1>
-  
+</section>
 
-    </header>
-    <div class="entry">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-<nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav></div></div>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
