@@ -50,6 +50,118 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2017-12-06T06:55:49.000Z"><a href="/2017/12/06/tpm-test-with-ibm-sw-tpm/">2017-12-06</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2017/12/06/tpm-test-with-ibm-sw-tpm/">tpm-test-with-ibm-sw-tpm</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Tried with IBM’s SW TPM</p>
+<h3 id="Step-1-Download-necessary-files"><a href="#Step-1-Download-necessary-files" class="headerlink" title="Step 1: Download necessary files"></a>Step 1: Download necessary files</h3><ul>
+<li>IBM’s Software TPM 2.0  (<a href="https://sourceforge.net/projects/ibmswtpm2/" target="_blank" rel="external">https://sourceforge.net/projects/ibmswtpm2/</a> )</li>
+<li>IBM’s TPM 2.0 TSS ( <a href="https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect" target="_blank" rel="external">https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect</a> ) </li>
+</ul>
+<h3 id="Step-2-Build-and-execute-the-SW-TPM"><a href="#Step-2-Build-and-execute-the-SW-TPM" class="headerlink" title="Step 2: Build and execute the SW TPM"></a>Step 2: Build and execute the SW TPM</h3><ol>
+<li><p>Extract the downloaded tarball </p>
+<p> $ ls<br> ibmtpm.doc  LICENSE  src  tpmvstudio<br> Install openssl 1.0.x (not 1.1.x)</p>
+</li>
+<li><p>Build (it requires openssl version 1.0.x, not 1.1.x)</p>
+<p> $ openssl<br> OpenSSL&gt; version<br> OpenSSL 1.0.2g  1 Mar 2016<br> OpenSSL&gt; quit</p>
+<p> cd src; make</p>
+</li>
+<li><p>Run</p>
+<p> $ ./tpm_server<br> TPM command server listening on port 2321<br> Platform server listening on port 2322</p>
+</li>
+</ol>
+<h3 id="Step-3-Build-the-TSS"><a href="#Step-3-Build-the-TSS" class="headerlink" title="Step 3: Build the TSS"></a>Step 3: Build the TSS</h3><ol>
+<li><p>Extract the downloaded tarball</p>
+<p> $ ls<br> demo  ibmtss.doc  ibmtss.html  LICENSE  tpmutils  utils</p>
+</li>
+<li><p>Build utilities</p>
+<p> cd utils; make</p>
+</li>
+</ol>
+<p>then, check out the built executables</p>
+<pre><code>$ find . -perm -111 -type f
+./policypcr
+./policyauthorize
+...
+</code></pre><p>Currently, it provides:</p>
+<p>activatecredential<br>certify, certifycreation<br>changeeps, changepps<br>clear<br>clearcontrol<br>clockrateadjust, clockset<br>commit<br>contextload, contextsave<br>create<br>createek<br>createloaded<br>createprimary<br>dictionaryattacklockreset, dictionaryattackparameters<br>duplicate<br>eccparameters<br>ecephemeral<br>encryptdecrypt<br>eventextend<br>eventsequencecomplete<br>evictcontrol<br>flushcontext<br>getcapability<br>getcommandauditdigest<br>getrandom<br>getsessionauditdigest<br>gettime<br>hash<br>hashsequencestart<br>hierarchychangeauth, hierarchycontrol<br>hmac, hmacstart<br>imaextend<br>import<br>importpem<br>libtss.so.0.1<br>load, loadexternal<br>makecredential<br>makeman.sh<br>ntc2getconfig, ntc2lockconfig, ntc2preconfig<br>nvcertify, nvchangeauth, nvdefinespace, nvextend, nvglobalwritelock, nvincrement<br>nvread, nvreadlock, nvreadpublic, nvsetbits, nvundefinespace, nvundefinespacespecial, nvwrite, nvwritelock<br>objectchangeauth<br>pcrallocate, pcrevent, pcrextend, pcrread, pcrreset<br>policyauthorize, policyauthorizenv, policyauthvalue, policycommandcode, policycountertimer, policycphash, policygetdigest, policymaker, policymakerpcr, policynv, policynvwritten, policyor, policypassword, policypcr, policyrestart, policysecret, policysigned, policytemplate, policyticket<br>powerup<br>quote<br>readclock<br>readpublic<br>reg.sh<br>returncode<br>rewrap<br>rsadecrypt, rsaencrypt<br>sequencecomplete, sequenceupdate<br>setprimarypolicy<br>shutdown<br>sign<br>signapp<br>startauthsession<br>startup<br>stirrandom<br>timepacket<br>unseal<br>verifysignature<br>writeapp</p>
+<p>Also there are scripts under ./regtests/<br>testsalt.sh, testpolicy.sh, testunseal.sh<br>testbind.sh, testencsession.sh, testecc.sh<br>testaes.sh, testrsa.sh, testchangeauth.sh<br>initkeys.sh, testda.sh, testcontext.sh<br>testpolicy138.sh, testpcr.sh, teststorage.sh<br>testchangeseed.sh, testhmacsession.sh, testnv.sh<br>testcredential.sh, testrng.sh, testclocks.sh<br>inittpm.sh, testsign.sh, testattest.sh<br>testshutdown.sh, testprimary.sh, testhmac.sh<br>testaes138.sh, testnvpin.sh, testhierarchy.sh<br>testdup.sh, testcreateloaded.sh, testevict.sh</p>
+<h3 id="Step-4-Power-up-and-start-the-SW-TPM"><a href="#Step-4-Power-up-and-start-the-SW-TPM" class="headerlink" title="Step 4: Power up and start the SW TPM"></a>Step 4: Power up and start the SW TPM</h3><p>Power up and start  up commands are required.</p>
+<p>(In the TSS/utils directory,)</p>
+<pre><code>$ ./powerup
+</code></pre><p>(If you already have started the tpm_server above, you will see this,)</p>
+<pre><code>...
+Client accepted
+Platform server listening on port 2322
+Start the SW TPM
+</code></pre><p>(In the TSS/utils directory,)</p>
+<pre><code>$ ./startup
+</code></pre><p>(the you will see,)</p>
+<pre><code>Client accepted
+TPM command server listening on port 2321
+</code></pre><h3 id="Step-5-Test-functions"><a href="#Step-5-Test-functions" class="headerlink" title="Step 5: Test functions"></a>Step 5: Test functions</h3><p>Generate random bytes</p>
+<pre><code>$ ./getrandom -by 4
+ randomBytes length 4
+ 12 5c da 46 
+</code></pre><h3 id="Step-6-Build-and-run-demo"><a href="#Step-6-Build-and-run-demo" class="headerlink" title="Step 6: Build and run demo"></a>Step 6: Build and run demo</h3><p>Move into the demo directory</p>
+<pre><code>$ ls
+admin.php     halgsha256.inc    keycreate.php    makefilesha1_dev  pcr.php
+block.png     handles.php       makefile         navdev.html       quote.php
+demo.css      ibm.png           makefile-common  nav.html          sign.php
+footer.html   IBM-TSS-Demo.doc  makefile_dev     nv.php            unseal.php
+halgsha1.inc  index.php         makefilesha1     nvram.php
+</code></pre><p>Prepare the www directory</p>
+<pre><code>$ sudo mkdir -p /var/www/html/tpm2
+$ sudo chmod 777 /var/www/html/tpm2
+</code></pre><p>Make (there are several makefiles for different options, but here I use the one with SHA256 and SW TPM options):</p>
+<p>$ make</p>
+<p>Install necessary packages</p>
+<pre><code>$ sudo apt install php php-dev
+</code></pre><p>Move to the webroot and launch the a webserver</p>
+<pre><code>$ cd /var/www/html
+</code></pre><p>Start a web server at your convenience. I tried it with python’s SimpleHTTPServer module first, but it couldn’t render the php page. So, I tried it again with php web server:</p>
+<pre><code>$ php -S 127.0.0.1:8000 -t .
+PHP 7.0.22-0ubuntu0.16.04.1 Development Server started ...
+Listening on http://127.0.0.1:8000
+Document root is /var/www/html
+Press Ctrl-C to quit.
+[Wed Dec  6 03:20:19 2017] 127.0.0.1:57810 [200]: /tpm2/index.php
+[Wed Dec  6 03:20:19 2017] 127.0.0.1:57812 [200]: /tpm2/demo.css
+[Wed Dec  6 03:20:19 2017] 127.0.0.1:57814 [200]: /tpm2/ibm.png
+[Wed Dec  6 03:20:19 2017] 127.0.0.1:57816 [200]: /tpm2/block.png
+[Wed Dec  6 03:20:24 2017] 127.0.0.1:57808 Invalid request (Unexpected EOF)
+Access to the demo home using iceweasel and some questions
+</code></pre><p>Then execute a browser and go to <a href="http://localhost:8000/tpm2/index.php" target="_blank" rel="external">http://localhost:8000/tpm2/index.php</a></p>
+<p><img src="./images/tss-demo-page.png" alt="web page"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2017-11-23T00:03:30.000Z"><a href="/2017/11/23/latex-with-emacs/">2017-11-23</a></time>
       
       
@@ -62,7 +174,9 @@
       
         <h1 id="Install-necessary-packages"><a href="#Install-necessary-packages" class="headerlink" title="Install necessary packages"></a>Install necessary packages</h1><p>Install auctex (texmaker is another great option).</p>
 <pre><code>$ apt install auctex texlive texlive-latex-extra 
-</code></pre><h1 id="AUCTEX"><a href="#AUCTEX" class="headerlink" title="AUCTEX"></a>AUCTEX</h1><p>auctex should be loaded automatically. If not, start it manually by<br>    M-x tex-mode<br>or, add the followings to ~/.emacs:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(setq TeX-auto-save t)</div><div class="line">(setq TeX-parse-self t)</div><div class="line">(setq TeX-save-query nil)</div><div class="line">;(setq TeX-PDF-mode t)</div></pre></td></tr></table></figure></p>
+</code></pre><h1 id="AUCTEX"><a href="#AUCTEX" class="headerlink" title="AUCTEX"></a>AUCTEX</h1><p>auctex should be loaded automatically. If not, start it manually by</p>
+<pre><code>M-x tex-mode
+</code></pre><p>or, add the followings to ~/.emacs:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(setq TeX-auto-save t)</div><div class="line">(setq TeX-parse-self t)</div><div class="line">(setq TeX-save-query nil)</div><div class="line">;(setq TeX-PDF-mode t)</div></pre></td></tr></table></figure></p>
 <h1 id="For-USENIX-papers"><a href="#For-USENIX-papers" class="headerlink" title="For USENIX papers,"></a>For USENIX papers,</h1><ul>
 <li><a href="https://www.usenix.org/legacy/events/sec06/cfp/submit-sample.tex" target="_blank" rel="external">latex sample</a></li>
 <li><a href="https://www.usenix.org/conferences/author-resources/paper-templates" target="_blank" rel="external">latex template</a></li>
