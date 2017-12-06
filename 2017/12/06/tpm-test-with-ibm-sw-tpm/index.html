@@ -70,18 +70,27 @@ IBM’s TPM 2.0 TSS ( ht">
 <li>IBM’s TPM 2.0 TSS ( <a href="https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect" target="_blank" rel="external">https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect</a> ) </li>
 </ul>
 <h3 id="Step-2-Build-and-execute-the-SW-TPM"><a href="#Step-2-Build-and-execute-the-SW-TPM" class="headerlink" title="Step 2: Build and execute the SW TPM"></a>Step 2: Build and execute the SW TPM</h3><ol>
-<li><p>Extract the downloaded tarball </p>
-<p> $ ls<br> ibmtpm.doc  LICENSE  src  tpmvstudio<br> Install openssl 1.0.x (not 1.1.x)</p>
-</li>
-<li><p>Build (it requires openssl version 1.0.x, not 1.1.x)</p>
-<p> $ openssl<br> OpenSSL&gt; version<br> OpenSSL 1.0.2g  1 Mar 2016<br> OpenSSL&gt; quit</p>
-<p> cd src; make</p>
-</li>
-<li><p>Run</p>
-<p> $ ./tpm_server<br> TPM command server listening on port 2321<br> Platform server listening on port 2322</p>
-</li>
+<li>Extract the downloaded tarball </li>
 </ol>
-<h3 id="Step-3-Build-the-TSS"><a href="#Step-3-Build-the-TSS" class="headerlink" title="Step 3: Build the TSS"></a>Step 3: Build the TSS</h3><ol>
+<pre><code>$ ls
+ibmtpm.doc  LICENSE  src  tpmvstudio
+Install openssl 1.0.x (not 1.1.x)
+</code></pre><ol>
+<li>Build (it requires openssl version 1.0.x, not 1.1.x)</li>
+</ol>
+<pre><code>$ openssl
+OpenSSL&gt; version
+OpenSSL 1.0.2g  1 Mar 2016
+OpenSSL&gt; quit
+
+cd src; make
+</code></pre><ol>
+<li>Run</li>
+</ol>
+<pre><code>$ ./tpm_server
+TPM command server listening on port 2321
+Platform server listening on port 2322
+</code></pre><h3 id="Step-3-Build-the-TSS"><a href="#Step-3-Build-the-TSS" class="headerlink" title="Step 3: Build the TSS"></a>Step 3: Build the TSS</h3><ol>
 <li><p>Extract the downloaded tarball</p>
 <p> $ ls<br> demo  ibmtss.doc  ibmtss.html  LICENSE  tpmutils  utils</p>
 </li>
@@ -150,6 +159,11 @@ Access to the demo home using iceweasel and some questions
     <footer>
       
         
+  
+  <div class="categories">
+    <a href="/categories/TPM/">TPM</a>
+  </div>
+
         
   
   <div class="tags">
@@ -182,7 +196,7 @@ Access to the demo home using iceweasel and some questions
 
 
 <section id="comment">
-  <h1 class="title">Kommentare</h1>
+  <h1 class="title">Comments</h1>
 
   
       <div id="fb-root"></div>
@@ -205,17 +219,19 @@ Access to the demo home using iceweasel and some questions
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="search" name="q" results="0" placeholder="Search">
     <input type="hidden" name="q" value="site:aintahydra.github.io">
   </form>
 </div>
 
   
 <div class="widget tag">
-  <h3 class="title">Kategorien</h3>
+  <h3 class="title">Categories</h3>
   <ul class="entry">
   
     <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
+  
+    <li><a href="/categories/TPM/">TPM</a><small>1</small></li>
   
     <li><a href="/categories/emacs/">emacs</a><small>2</small></li>
   
