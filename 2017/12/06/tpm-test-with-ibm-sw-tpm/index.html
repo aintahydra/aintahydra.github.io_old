@@ -91,14 +91,15 @@ cd src; make
 TPM command server listening on port 2321
 Platform server listening on port 2322
 </code></pre><h3 id="Step-3-Build-the-TSS"><a href="#Step-3-Build-the-TSS" class="headerlink" title="Step 3: Build the TSS"></a>Step 3: Build the TSS</h3><ol>
-<li><p>Extract the downloaded tarball</p>
-<p> $ ls<br> demo  ibmtss.doc  ibmtss.html  LICENSE  tpmutils  utils</p>
-</li>
-<li><p>Build utilities</p>
-<p> cd utils; make</p>
-</li>
+<li>Extract the downloaded tarball</li>
 </ol>
-<p>then, check out the built executables</p>
+<pre><code>$ ls
+demo  ibmtss.doc  ibmtss.html  LICENSE  tpmutils  utils
+</code></pre><ol>
+<li>Build utilities</li>
+</ol>
+<pre><code>cd utils; make
+</code></pre><p>then, check out the built executables</p>
 <pre><code>$ find . -perm -111 -type f
 ./policypcr
 ./policyauthorize
@@ -123,7 +124,7 @@ TPM command server listening on port 2321
 <pre><code>$ ./getrandom -by 4
  randomBytes length 4
  12 5c da 46 
-</code></pre><h3 id="Step-6-Build-and-run-demo"><a href="#Step-6-Build-and-run-demo" class="headerlink" title="Step 6: Build and run demo"></a>Step 6: Build and run demo</h3><p>Move into the demo directory</p>
+</code></pre><h3 id="Step-6-Build-demo"><a href="#Step-6-Build-demo" class="headerlink" title="Step 6: Build demo"></a>Step 6: Build demo</h3><p>Move into the demo directory</p>
 <pre><code>$ ls
 admin.php     halgsha256.inc    keycreate.php    makefilesha1_dev  pcr.php
 block.png     handles.php       makefile         navdev.html       quote.php
@@ -153,7 +154,15 @@ Press Ctrl-C to quit.
 Access to the demo home using iceweasel and some questions
 </code></pre><p>Then execute a browser and go to <a href="http://localhost:8000/tpm2/index.php" target="_blank" rel="external">http://localhost:8000/tpm2/index.php</a></p>
 <p><img src="./images/tss-demo-page.png" alt="web page"></p>
-
+<h3 id="Step-7-Run-the-demo"><a href="#Step-7-Run-the-demo" class="headerlink" title="Step 7: Run the demo"></a>Step 7: Run the demo</h3><p>The demo is quite easy to follow. The document (ibmtss.doc) included in the tarball directs well what should be done.<br>These are what I found walking through the demo:</p>
+<p>(1) a bug in keycreate.php<br>I found a small bug in demo, though. Line 82 of demo/keycreate.php has to be</p>
+<pre><code>$retval = 0
+</code></pre><p>instead of</p>
+<pre><code>$retval == 0
+</code></pre><p>The version I have is ibmtss1045, realeased on 17 Jul 2017.</p>
+<p>(2) symlink to libtss.so<br>The demo needs libtss.so.0. You may need to create a symlink like:</p>
+<pre><code>$ ln -s PATH_TO_TSS/imbtss1045/utils/libtss.so.0 /var/www/html/tpm2/libtss.so.0
+</code></pre>
       
     </div>
     <footer>
@@ -196,7 +205,7 @@ Access to the demo home using iceweasel and some questions
 
 
 <section id="comment">
-  <h1 class="title">Comments</h1>
+  <h1 class="title">Kommentare</h1>
 
   
       <div id="fb-root"></div>
@@ -219,14 +228,14 @@ Access to the demo home using iceweasel and some questions
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="search" name="q" results="0" placeholder="Suche">
     <input type="hidden" name="q" value="site:aintahydra.github.io">
   </form>
 </div>
 
   
 <div class="widget tag">
-  <h3 class="title">Categories</h3>
+  <h3 class="title">Kategorien</h3>
   <ul class="entry">
   
     <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
