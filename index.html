@@ -520,6 +520,99 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
 
 
 
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-12-07T13:39:32.000Z"><a href="/2015/12/07/develope-with-emacs/">2015-12-07</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/12/07/develope-with-emacs/">develope-with-emacs</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h1><pre><code>$ emacs test.cpp
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#include &lt;iostream&gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">  cout &lt;&lt; &quot;Hello World&quot;;</div><div class="line">  return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Compile</p>
+<ul>
+<li>after saving (C-x C-s) the file, input (M-x compile)</li>
+<li>then you will see the minibuffer appears below, showing “make -k”</li>
+<li>input (C-a) and then (C-k) (move up front in that line + kill afterwards)</li>
+<li>input (g++ -o test test.cpp)</li>
+<li>then another buffer is created and shows a compile error</li>
+</ul>
+<p>Debug</p>
+<ul>
+<li>input (C-x `) then the cursor will be moved to where caused the error<ul>
+<li>Repeat input (C-x `) and fix error until all the compile errors go away</li>
+</ul>
+</li>
+<li>after debugging, save the file (C-x C-s) and compile it again (M-x compile)</li>
+</ul>
+<p>Run</p>
+<ul>
+<li>After compilation, (optionally) move to the other buffer (C-x o), and execute a shell by (M-x shell), and input (./test)</li>
+</ul>
+<h1 id="gdb-with-emacs"><a href="#gdb-with-emacs" class="headerlink" title="gdb with emacs"></a>gdb with emacs</h1><pre><code>$ emacs divzero.cpp
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">#include &lt;iostream&gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">int div(int a, int b)</div><div class="line">&#123;</div><div class="line">  return (a / b);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">  int x, y;</div><div class="line"></div><div class="line">  x = 4, y = 2;</div><div class="line">  cout &lt;&lt; div(x, y);</div><div class="line"></div><div class="line">  x = 4, y = 0;</div><div class="line">  cout &lt;&lt; div(x, y);</div><div class="line"></div><div class="line">  return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>compile it with -g option, like</p>
+<pre><code>g++ -g -o divzero divzero.cpp
+</code></pre><p>then it is compiled clean, but when you run it, it will be crashed</p>
+<pre><code>$ ./divzero
+Floating point exception (core dumped)
+</code></pre><p>Run gdb with (M-x gdb), then it will show gdb in the other window.<br>Run it. Use “run (or r)”</p>
+<pre><code>(gdb) run
+Starting program: /home/ohpato/c_cpp/divzero
+Program received signal SIGFPE, Arithmetic exception.
+0x0000000000400754 in div (a=4, b=0) at divzero.cpp:7
+7      return (a / b);
+</code></pre><p>Also, in the other window, a small triangle should be appeared pointing out where the Arithmetic exception is caused.</p>
+<p>Let’s backtrace it. Use “backtrace( or bt)”</p>
+<pre><code>(gdb) bt
+#0  0x0000000000400754 in div (a=4, b=0) at divzero.cpp:7
+#1  0x00000000004007a7 in main () at divzero.cpp:18
+</code></pre><p>It says the exception occurred when div() is called in main().<br>Set breakpoint at div(). Use “break(or br)”</p>
+<pre><code>(gdb) break divzero.cpp:div
+Breakpoint 7 at 0x400750: file divzero.cpp, line 7.
+</code></pre><p>Now, let’s re run it</p>
+<pre><code>(gdb) r
+Starting program: /home/ohpato/c_cpp/divzero
+Breakpoint 7, div (a=4, b=2) at divzero.cpp:7
+7      return (a / b);
+</code></pre><p>Go forward with “next (or n)” or (C-c C-n). Or “step (or s)” or (C-c C-s). Then, the small triangle in the other window should move along.  </p>
+<p>After debugging,<br>Save (C-x C-s) -&gt; Compile (M-x compile) -&gt; Go to another buffer (C-x o) -&gt; Switch to gdb buffer (C-x b)</p>
+<p>When the gdb buffer appears,<br>read the new file. Use “file”</p>
+<pre><code>(gdb) file divzero
+Reading symbols from divzero...done.
+</code></pre><p>Clear breakpoints</p>
+<pre><code>(gdb) clear
+Deleted breakpoint 7
+</code></pre><p>Run it.</p>
+<pre><code>(gdb) r
+Starting program: /home/ohpato/c_cpp/divzero
+[Inferior 1 (process 1347) exited normally]
+</code></pre><p>Looks good now.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
 
 <nav id="pagination">
   
@@ -543,7 +636,7 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
   
     <li><a href="/categories/TPM/">TPM</a><small>1</small></li>
   
-    <li><a href="/categories/emacs/">emacs</a><small>2</small></li>
+    <li><a href="/categories/emacs/">emacs</a><small>3</small></li>
   
     <li><a href="/categories/python/">python</a><small>1</small></li>
   
@@ -570,9 +663,11 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
   
     <li><a href="/tags/ctag/">ctag</a><small>1</small></li>
   
-    <li><a href="/tags/emacs/">emacs</a><small>2</small></li>
+    <li><a href="/tags/emacs/">emacs</a><small>3</small></li>
   
     <li><a href="/tags/etag/">etag</a><small>1</small></li>
+  
+    <li><a href="/tags/gdb/">gdb</a><small>1</small></li>
   
     <li><a href="/tags/latex/">latex</a><small>1</small></li>
   

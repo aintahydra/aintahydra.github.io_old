@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>develope-with-emacs | aintahydra</title>
+  <meta name="author" content="aintahydra">
+  
+  <meta name="description" content="Basic$ emacs test.cpp
+123456789#include &amp;lt;iostream&amp;gt;using namespace std;int main (void)&amp;#123;  cout &amp;lt;&amp;lt; &amp;quot;Hello World&amp;quot;;  return;&amp;#12">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="develope-with-emacs"/>
+  <meta property="og:site_name" content="aintahydra"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="aintahydra" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">aintahydra</a></h1>
+  <h2><a href="/">dont talk shit</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-12-07T13:39:32.000Z"><a href="/2015/12/07/develope-with-emacs/">2015-12-07</a></time>
+      
+      
+  
+    <h1 class="title">develope-with-emacs</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h1><pre><code>$ emacs test.cpp
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#include &lt;iostream&gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">  cout &lt;&lt; &quot;Hello World&quot;;</div><div class="line">  return;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Compile</p>
+<ul>
+<li>after saving (C-x C-s) the file, input (M-x compile)</li>
+<li>then you will see the minibuffer appears below, showing “make -k”</li>
+<li>input (C-a) and then (C-k) (move up front in that line + kill afterwards)</li>
+<li>input (g++ -o test test.cpp)</li>
+<li>then another buffer is created and shows a compile error</li>
+</ul>
+<p>Debug</p>
+<ul>
+<li>input (C-x `) then the cursor will be moved to where caused the error<ul>
+<li>Repeat input (C-x `) and fix error until all the compile errors go away</li>
+</ul>
+</li>
+<li>after debugging, save the file (C-x C-s) and compile it again (M-x compile)</li>
+</ul>
+<p>Run</p>
+<ul>
+<li>After compilation, (optionally) move to the other buffer (C-x o), and execute a shell by (M-x shell), and input (./test)</li>
+</ul>
+<h1 id="gdb-with-emacs"><a href="#gdb-with-emacs" class="headerlink" title="gdb with emacs"></a>gdb with emacs</h1><pre><code>$ emacs divzero.cpp
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">#include &lt;iostream&gt;</div><div class="line"></div><div class="line">using namespace std;</div><div class="line"></div><div class="line">int div(int a, int b)</div><div class="line">&#123;</div><div class="line">  return (a / b);</div><div class="line">&#125;</div><div class="line"></div><div class="line">int main (void)</div><div class="line">&#123;</div><div class="line">  int x, y;</div><div class="line"></div><div class="line">  x = 4, y = 2;</div><div class="line">  cout &lt;&lt; div(x, y);</div><div class="line"></div><div class="line">  x = 4, y = 0;</div><div class="line">  cout &lt;&lt; div(x, y);</div><div class="line"></div><div class="line">  return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>compile it with -g option, like</p>
+<pre><code>g++ -g -o divzero divzero.cpp
+</code></pre><p>then it is compiled clean, but when you run it, it will be crashed</p>
+<pre><code>$ ./divzero
+Floating point exception (core dumped)
+</code></pre><p>Run gdb with (M-x gdb), then it will show gdb in the other window.<br>Run it. Use “run (or r)”</p>
+<pre><code>(gdb) run
+Starting program: /home/ohpato/c_cpp/divzero
+Program received signal SIGFPE, Arithmetic exception.
+0x0000000000400754 in div (a=4, b=0) at divzero.cpp:7
+7      return (a / b);
+</code></pre><p>Also, in the other window, a small triangle should be appeared pointing out where the Arithmetic exception is caused.</p>
+<p>Let’s backtrace it. Use “backtrace( or bt)”</p>
+<pre><code>(gdb) bt
+#0  0x0000000000400754 in div (a=4, b=0) at divzero.cpp:7
+#1  0x00000000004007a7 in main () at divzero.cpp:18
+</code></pre><p>It says the exception occurred when div() is called in main().<br>Set breakpoint at div(). Use “break(or br)”</p>
+<pre><code>(gdb) break divzero.cpp:div
+Breakpoint 7 at 0x400750: file divzero.cpp, line 7.
+</code></pre><p>Now, let’s re run it</p>
+<pre><code>(gdb) r
+Starting program: /home/ohpato/c_cpp/divzero
+Breakpoint 7, div (a=4, b=2) at divzero.cpp:7
+7      return (a / b);
+</code></pre><p>Go forward with “next (or n)” or (C-c C-n). Or “step (or s)” or (C-c C-s). Then, the small triangle in the other window should move along.  </p>
+<p>After debugging,<br>Save (C-x C-s) -&gt; Compile (M-x compile) -&gt; Go to another buffer (C-x o) -&gt; Switch to gdb buffer (C-x b)</p>
+<p>When the gdb buffer appears,<br>read the new file. Use “file”</p>
+<pre><code>(gdb) file divzero
+Reading symbols from divzero...done.
+</code></pre><p>Clear breakpoints</p>
+<pre><code>(gdb) clear
+Deleted breakpoint 7
+</code></pre><p>Run it.</p>
+<pre><code>(gdb) r
+Starting program: /home/ohpato/c_cpp/divzero
+[Inferior 1 (process 1347) exited normally]
+</code></pre><p>Looks good now.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/emacs/">emacs</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/emacs/">emacs</a>, <a href="/tags/gdb/">gdb</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://aintahydra.github.io/2015/12/07/develope-with-emacs/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="hidden" name="q" value="site:aintahydra.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Kategorien</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
+  
+    <li><a href="/categories/TPM/">TPM</a><small>1</small></li>
+  
+    <li><a href="/categories/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/TAGS/">TAGS</a><small>1</small></li>
+  
+    <li><a href="/tags/TPM/">TPM</a><small>1</small></li>
+  
+    <li><a href="/tags/TSS/">TSS</a><small>1</small></li>
+  
+    <li><a href="/tags/Trusted-Platform-Module/">Trusted Platform Module</a><small>1</small></li>
+  
+    <li><a href="/tags/auctex/">auctex</a><small>1</small></li>
+  
+    <li><a href="/tags/crawler/">crawler</a><small>1</small></li>
+  
+    <li><a href="/tags/ctag/">ctag</a><small>1</small></li>
+  
+    <li><a href="/tags/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/tags/etag/">etag</a><small>1</small></li>
+  
+    <li><a href="/tags/gdb/">gdb</a><small>1</small></li>
+  
+    <li><a href="/tags/latex/">latex</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/scrapy/">scrapy</a><small>1</small></li>
+  
+    <li><a href="/tags/xpath/">xpath</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2017 aintahydra
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
