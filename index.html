@@ -63,10 +63,10 @@
         <p>Tried with IBM’s SW TPM</p>
 <h3 id="Step-1-Download-necessary-files"><a href="#Step-1-Download-necessary-files" class="headerlink" title="Step 1: Download necessary files"></a>Step 1: Download necessary files</h3><ul>
 <li>IBM’s Software TPM 2.0  (<a href="https://sourceforge.net/projects/ibmswtpm2/" target="_blank" rel="external">https://sourceforge.net/projects/ibmswtpm2/</a> )</li>
-<li>IBM’s TPM 2.0 TSS ( <a href="https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect" target="_blank" rel="external">https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect</a> ) </li>
+<li>IBM’s TPM 2.0 TSS ( <a href="https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect" target="_blank" rel="external">https://sourceforge.net/projects/ibmtpm20tss/?source=typ_redirect</a> )</li>
 </ul>
 <h3 id="Step-2-Build-and-execute-the-SW-TPM"><a href="#Step-2-Build-and-execute-the-SW-TPM" class="headerlink" title="Step 2: Build and execute the SW TPM"></a>Step 2: Build and execute the SW TPM</h3><ol>
-<li>Extract the downloaded tarball </li>
+<li>Extract the downloaded tarball</li>
 </ol>
 <pre><code>$ ls
 ibmtpm.doc  LICENSE  src  tpmvstudio
@@ -119,7 +119,7 @@ TPM command server listening on port 2321
 </code></pre><h3 id="Step-5-Test-functions"><a href="#Step-5-Test-functions" class="headerlink" title="Step 5: Test functions"></a>Step 5: Test functions</h3><p>Generate random bytes</p>
 <pre><code>$ ./getrandom -by 4
  randomBytes length 4
- 12 5c da 46 
+ 12 5c da 46
 </code></pre><h3 id="Step-6-Build-demo"><a href="#Step-6-Build-demo" class="headerlink" title="Step 6: Build demo"></a>Step 6: Build demo</h3><p>Move into the demo directory</p>
 <pre><code>$ ls
 admin.php     halgsha256.inc    keycreate.php    makefilesha1_dev  pcr.php
@@ -156,6 +156,7 @@ Access to the demo home using iceweasel and some questions
 </code></pre><p>instead of</p>
 <pre><code>$retval == 0
 </code></pre><p>The version I have is ibmtss1045, realeased on 17 Jul 2017.</p>
+<p>** I reported this to the community, and it is going to be fixed:<br><img src="./images/KenGoldman.png" alt="mail"></p>
 <p>(2) symlink to libtss.so<br>The demo needs libtss.so.0. You may need to create a symlink like:</p>
 <pre><code>$ ln -s PATH_TO_TSS/imbtss1045/utils/libtss.so.0 /var/www/html/tpm2/libtss.so.0
 </code></pre>
