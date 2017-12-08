@@ -461,6 +461,35 @@ $ EDIT crawling_apt/spiders/AHoppingSpider.py
 </tr>
 </tbody>
 </table>
+<h1 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h1><p>I am using tboot-1.9.6 code that can be downloaded at <a href="https://sourceforge.net/projects/tboot/" target="_blank" rel="external">https://sourceforge.net/projects/tboot/</a></p>
+<h2 id="Generate-a-tag-table"><a href="#Generate-a-tag-table" class="headerlink" title="Generate a tag table"></a>Generate a tag table</h2><pre><code>$ pwd
+/home/xxxxxx/etags/tboot-1.9.6
+$ find -H ~/Downloads/tboot-1.9.6 -name &apos;*.[csSh]&apos; | etags -
+</code></pre><p>etag create a tag table (file name: TAGS) in current directory</p>
+<pre><code>$ head -n 5 TAGS
+/home/xxxxxx/Downloads/tboot-1.9.6/lcptools/poldata.c,226
+#define PRINT 42,1745
+size_t get_policy_data_size(53,2011
+bool verify_policy_data(65,2405
+...
+</code></pre><h2 id="source-navigate"><a href="#source-navigate" class="headerlink" title="source navigate"></a>source navigate</h2><ul>
+<li>open a file with emacs. (for example,  ~/Downloads/tboot-1.9.6/tboot/common/tboot.c is opened here)</li>
+<li><p>place the cursor on a function and (M-.), then the minibuffer will show a message, like:</p>
+<p>  Find tag: (default txt_verify_platform)</p>
+</li>
+</ul>
+<p><img src="./images/tboot-src-ex1.png" alt="finding a tag"></p>
+<ul>
+<li><p>press <enter>, then emacs will ask the location of TAG table</enter></p>
+<p>  Visit tags table (default TAGS): ~/Downloads/tboot-1.9.6/tboot/common/</p>
+</li>
+<li><p>tell where is the tag table (~/etags/tboot-1.9.6), then it will show the first match</p>
+<ul>
+<li>Now you can go to the next match (C-u M-.) or the previous match (M-*)</li>
+</ul>
+</li>
+</ul>
+<p>##</p>
 <h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref."></a>Ref.</h1><ul>
 <li><a href="https://www.emacswiki.org/emacs/EmacsTags" target="_blank" rel="external">https://www.emacswiki.org/emacs/EmacsTags</a></li>
 </ul>
