@@ -136,7 +136,7 @@ bool verify_policy_data(65,2405
 <p>  Find tag: (default txt_verify_platform)</p>
 </li>
 </ul>
-<p><img src="./images/tboot-src-ex1.png" alt="finding a tag"></p>
+<p><img src="./images/tboot-src-ex1.png" alt="finding-a-tag"></p>
 <ul>
 <li><p>press <enter>, then emacs will ask the location of TAG table</enter></p>
 <p>  Visit tags table (default TAGS): ~/Downloads/tboot-1.9.6/tboot/common/</p>
@@ -147,9 +147,22 @@ bool verify_policy_data(65,2405
 </ul>
 </li>
 </ul>
-<p>##</p>
+<h1 id="emacs-with-cscope"><a href="#emacs-with-cscope" class="headerlink" title="emacs with cscope"></a>emacs with cscope</h1><h2 id="install-cscope"><a href="#install-cscope" class="headerlink" title="install cscope"></a>install cscope</h2><pre><code>$ sudo apt install cscope xcscope-el
+</code></pre><p>add the following line to ~/.emacs and ~/.emacs.d/init.el</p>
+<pre><code>(require &apos;xcscope&apos;)
+</code></pre><h2 id="open-a-file-with-emacs-and-generate-cscope-DB"><a href="#open-a-file-with-emacs-and-generate-cscope-DB" class="headerlink" title="open a file with emacs, and generate cscope DB"></a>open a file with emacs, and generate cscope DB</h2><p>Open a source file, and enter</p>
+<pre><code>M-x cscope-index-file
+</code></pre><p>after let it know the source code location, it will create  cscope.out and cscope.files will be created then.</p>
+<pre><code>$ cscope -bkqR
+$ ls
+CHANGELOG  cscope.in.out  docs      lcptools     README     test-patches
+Config.mk  cscope.out     include   lcptools-v2  tboot      txt-test
+COPYING    cscope.po.out  lcp-gen2  Makefile     tb_polgen  utils
+</code></pre><h2 id="Browse-source-codes"><a href="#Browse-source-codes" class="headerlink" title="Browse source codes"></a>Browse source codes</h2><p>Place the cursor on a function, and move to the definition by (C-c s d)</p>
+<p>Other shortcuts are:<br>| key | action     |<br>| :————- | :————- |<br>| C-c s s       | Find symbol       |<br>| C-c s d       | Find global definition      |<br>| C-c s g       | Find global definition (alternate binding)      |<br>| C-c s G       | Find global definition without prompting     |<br>| C-c s c       | Find functions calling a function       |<br>| C-c s C       | Find called functions (list functions called from a function)       |<br>| C-c s t       | Find text string       |<br>| C-c s e       | Find egrep pattern       |<br>| C-c s f       | Find a file       |<br>| C-c s i       | Find files #including a file       |</p>
 <h1 id="Ref"><a href="#Ref" class="headerlink" title="Ref."></a>Ref.</h1><ul>
-<li><a href="https://www.emacswiki.org/emacs/EmacsTags" target="_blank" rel="external">https://www.emacswiki.org/emacs/EmacsTags</a></li>
+<li><a href="https://www.emacswiki.org/emacs/EmacsTags" target="_blank" rel="external">https://www.emacswiki.org/emacs/EmacsTags</a><br><a href="https://www.emacswiki.org/emacs/CScopeAndEmacs" target="_blank" rel="external">https://www.emacswiki.org/emacs/CScopeAndEmacs</a></li>
+<li><a href="https://techtooltip.wordpress.com/2012/01/06/how-to-integrate-emacs-cscope-to-browse-linux-kernel-source-code/" target="_blank" rel="external">https://techtooltip.wordpress.com/2012/01/06/how-to-integrate-emacs-cscope-to-browse-linux-kernel-source-code/</a></li>
 </ul>
 
       
