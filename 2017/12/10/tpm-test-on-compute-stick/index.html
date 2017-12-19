@@ -1,0 +1,318 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>tpm-test-on-compute-stick | aintahydra - dont talk shit</title>
+  <meta name="author" content="aintahydra">
+  
+  <meta name="description" content="HardwareCompute Stick running Ubuntu 17.10 STK2mv64CC
+
+Intel(R) Core(TM) m5-6Y57 CPU @ 1.10GHz
+Storage: 64GB SSD
+Memory: LPDDR3-1866 4GB
+Graphics: Int">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="tpm-test-on-compute-stick"/>
+  <meta property="og:site_name" content="aintahydra - dont talk shit"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="aintahydra - dont talk shit" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">aintahydra - dont talk shit</a></h1>
+  <h2><a href="/">They hey seemed to insist upon his being but a mere __daily breader__,&#34; who was trudging home to snatch a few hours&#39; sleep before hurrying off to catch the train to his work. -- _Horace W. C. Newte, The Square Mile, A Story of Ways and Means, 1908_</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-12-10T04:20:20.000Z"><a href="/2017/12/10/tpm-test-on-compute-stick/">2017-12-10</a></time>
+      
+      
+  
+    <h1 class="title">tpm-test-on-compute-stick</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Hardware"><a href="#Hardware" class="headerlink" title="Hardware"></a>Hardware</h1><p>Compute Stick running Ubuntu 17.10 <a href="https://www.intel.com/content/www/us/en/products/boards-kits/compute-stick/stk2mv64cc.html" target="_blank" rel="external">STK2mv64CC</a></p>
+<ul>
+<li>Intel(R) Core(TM) m5-6Y57 CPU @ 1.10GHz</li>
+<li>Storage: 64GB SSD</li>
+<li>Memory: LPDDR3-1866 4GB</li>
+<li>Graphics: Integrated, (as Ubuntu recognizes) Intel® HD Graphics 515 (Skylake GT2)</li>
+<li>Wireless: Intel® Wireless-AC 8260 + BT 4.2</li>
+<li>TPM: 2.0</li>
+<li>Trusted Extension Technology</li>
+</ul>
+<h1 id="Install-tpm2-tools"><a href="#Install-tpm2-tools" class="headerlink" title="Install tpm2-tools"></a>Install tpm2-tools</h1><pre><code>$ sudo apt install tpm2-tools
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following additional packages will be installed:
+  libsapi-utils libsapi0
+The following NEW packages will be installed:
+  libsapi-utils libsapi0 tpm2-tools
+...
+</code></pre><h1 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h1><h2 id="Check-opened-ports"><a href="#Check-opened-ports" class="headerlink" title="Check opened ports"></a>Check opened ports</h2><pre><code>$ netstat -utlpn
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:5355            0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:2323          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:2324          0.0.0.0:*               LISTEN      -                   
+tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      -                   
+...
+</code></pre><p>2323 should be the platform port and 2324 should be the command port</p>
+<h2 id="Value-listings"><a href="#Value-listings" class="headerlink" title="Value listings"></a>Value listings</h2><p>Listing up PCR values </p>
+<pre><code>$ tpm2_listpcrs
+Bank/Algorithm: TPM_ALG_SHA1(0x0004)
+PCR_00:   ...
+
+Bank/Algorithm: TPM_ALG_SHA256(0x000b)
+PCR_00: ...
+</code></pre><p>Listing up values defined in the non-volatile storage</p>
+<pre><code>$ tpm2_nvlist 
+11 NV indexes defined.
+
+  0. NV Index: 0x1410001
+  {
+    Hash algorithm(nameAlg):11
+     The Index attributes(attributes):0x26040014
+     The size of the data area(dataSize):8
+   }
+
+  1. NV Index: 0x1410002
+  ....
+</code></pre><h2 id="Get-Random"><a href="#Get-Random" class="headerlink" title="Get Random"></a>Get Random</h2><pre><code>$ tpm2_getrandom -s 20 -o random.out
+GetRandom succ...
+byte size: 20
+ 0xE0 0x14 0xBB 0xA8 0xD5 0x58 0xA2 0x9B 0x95 0xF1 0xD9 0xFD 0x3B 0x52 0x7D 0x82 0xEF 0xD8 0xF3 0x75
+</code></pre><h2 id="Get-hash"><a href="#Get-hash" class="headerlink" title="Get hash"></a>Get hash</h2><pre><code>$ cat &gt; ~/data.in
+Hello World!
+
+$ tpm2_hash -H n -g 0x0004 -I ~/data.in -o ~/hash.out -t ~/tk.out
+hierarchyValue: 0x40000007
+
+halg = 0x0004
+
+tpm2_hash succ.
+
+hash value(hex type): a0 b6 59 39 67 0b c2 c0 10 f4 d5 d6 a0 b3 e4 e4 59 0f b9 2b 
+
+validation value(hex type): 
+
+$ hexdump -C ~/hash.out 
+00000000  14 00 a0 b6 59 39 67 0b  c2 c0 10 f4 d5 d6 a0 b3  |....Y9g.........|
+00000010  e4 e4 59 0f b9 2b 00 00  00 00 00 00 00 00 00 00  |..Y..+..........|
+00000020  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+</code></pre><h1 id="Troubleshootings"><a href="#Troubleshootings" class="headerlink" title="Troubleshootings"></a>Troubleshootings</h1><h2 id="Failed-initialization"><a href="#Failed-initialization" class="headerlink" title="Failed initialization"></a>Failed initialization</h2><p>Sometimes it shows, </p>
+<pre><code>$ tpm2_listpcrs
+Resource Mgr, resMgr, failed initialization: 0x1.  Exiting...
+</code></pre><p>Then, restart the resource manager service.</p>
+<pre><code>$ sudo systemctl status tpm2-resourcemgr.service
+
+$ systemctl status tpm2-resourcemgr.service 
+● tpm2-resourcemgr.service - TPM resource manager daemon
+   Loaded: loaded (/lib/systemd/system/tpm2-resourcemgr.service; disabled; vendo
+....
+</code></pre><p>but, still resourcemgr wouldn’t work. It seems resourcemgr was the legacy of previous version of the software stack. <strong>Software for TPM 1.2 (trousers, the libtpm.so, etc.) seem not working TPM2</strong></p>
+<pre><code>$ resourcemgr 
+Initializing device TCTI Interface
+Resource Mgr, device TCTI, failed initialization: 0xa000a.  Exiting...
+</code></pre><h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li><a href="https://mhsamsal.wordpress.com/2014/12/11/how-to-enable-tpm-in-linux-communicate-with-it-and-check-the-pcr-values/" target="_blank" rel="external">https://mhsamsal.wordpress.com/2014/12/11/how-to-enable-tpm-in-linux-communicate-with-it-and-check-the-pcr-values/</a></li>
+<li><a href="https://github.com/intel/tpm2-tools" target="_blank" rel="external">https://github.com/intel/tpm2-tools</a></li>
+<li>how to use tpm 2 tools (Intel) - <a href="https://github.com/intel/tpm2-tools/wiki/How-to-use-tpm2-tools" target="_blank" rel="external">https://github.com/intel/tpm2-tools/wiki/How-to-use-tpm2-tools</a></li>
+<li>TPM2 and Linux - <a href="https://blog.hansenpartnership.com/tpm2-and-linux/" target="_blank" rel="external">https://blog.hansenpartnership.com/tpm2-and-linux/</a></li>
+<li>TPM 1.2 vs. 2.0 Features - <a href="http://en.community.dell.com/techcenter/enterprise-client/w/wiki/11849.tpm-1-2-vs-2-0-features" target="_blank" rel="external">http://en.community.dell.com/techcenter/enterprise-client/w/wiki/11849.tpm-1-2-vs-2-0-features</a></li>
+<li>IBM’s Trousers for TPM 2.0 - <a href="https://sourceforge.net/projects/ibmtpm20tss/?source=navbar" target="_blank" rel="external">https://sourceforge.net/projects/ibmtpm20tss/?source=navbar</a></li>
+<li>An Introduction to programming the TPM - <a href="https://www.cylab.cmu.edu/tiw/slides/challener-TPM.pdf" target="_blank" rel="external">https://www.cylab.cmu.edu/tiw/slides/challener-TPM.pdf</a></li>
+<li>A Practical Guide to TPM 2.0 </li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/TPM/">TPM</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/compute-stick/">compute stick</a>, <a href="/tags/TPM/">TPM</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://aintahydra.github.io/2017/12/10/tpm-test-on-compute-stick/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="hidden" name="q" value="site:aintahydra.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Kategorien</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
+  
+    <li><a href="/categories/TPM/">TPM</a><small>2</small></li>
+  
+    <li><a href="/categories/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/tpm/">tpm</a><small>0</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/TAGS/">TAGS</a><small>1</small></li>
+  
+    <li><a href="/tags/TPM/">TPM</a><small>2</small></li>
+  
+    <li><a href="/tags/TSS/">TSS</a><small>1</small></li>
+  
+    <li><a href="/tags/Trusted-Platform-Module/">Trusted Platform Module</a><small>1</small></li>
+  
+    <li><a href="/tags/auctex/">auctex</a><small>1</small></li>
+  
+    <li><a href="/tags/compute-stick/">compute stick</a><small>1</small></li>
+  
+    <li><a href="/tags/crawler/">crawler</a><small>1</small></li>
+  
+    <li><a href="/tags/ctag/">ctag</a><small>1</small></li>
+  
+    <li><a href="/tags/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/tags/etag/">etag</a><small>1</small></li>
+  
+    <li><a href="/tags/gdb/">gdb</a><small>1</small></li>
+  
+    <li><a href="/tags/latex/">latex</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/scrapy/">scrapy</a><small>1</small></li>
+  
+    <li><a href="/tags/tpm/">tpm</a><small>0</small></li>
+  
+    <li><a href="/tags/xpath/">xpath</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2017 aintahydra
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
