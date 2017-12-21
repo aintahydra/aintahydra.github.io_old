@@ -147,6 +147,9 @@ $ hexdump -C ~/hash.out
 <p>** Note:<br>The above code is from “A Practical Guide to TPM 2.0”. While the book does not tell where 0x00000008 is defined, IBM’s SW TPM implementation gave me some hints. In case of ibmtpm974, TPM_SEND_COMMAND is defined in TpmTcpProtocol.h:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/* ...</div><div class="line"> Most TPM</div><div class="line">   commands are enveloped using the TPM_SEND_COMMAND interface command. The parameters are as</div><div class="line">   indicated below. </div><div class="line">... */</div><div class="line">...</div><div class="line">#define TPM_SEND_COMMAND            8</div><div class="line">    // &#123;BYTE Locality, UINT32 InBufferSize, BYTE[InBufferSize] InBuffer&#125; -&gt;</div><div class="line">    //     &#123;UINT32 OutBufferSize, BYTE[OutBufferSize] OutBuffer&#125;</div></pre></td></tr></table></figure></p>
 <p>The sent command is processed in tpm server, where<br>main() @ TpmCmds.c -&gt; StartTcpServer() @ TcpServerPosix.c -&gt; RegularCommandService() @ TcpServerPosix.c -&gt; TpmServer() in TcpServerPosix.c : </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">...	    </div><div class="line">		  case TPM_SEND_COMMAND:</div><div class="line">		    ok = ReadBytes(s, (char*) &amp;locality, 1);</div><div class="line">		    if(!ok)</div><div class="line">			return TRUE;</div><div class="line">		    </div><div class="line">		    ok = ReadVarBytes(s, InputBuffer, &amp;length, MAX_BUFFER);</div><div class="line">		    if(!ok)</div><div class="line">			return TRUE;</div><div class="line">		    InBuffer.Buffer = (BYTE*) InputBuffer;</div><div class="line">		    InBuffer.BufferSize = length;</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>In case of Intel, the command seems to be defined in tcti_socket.h of tpm2-tss:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line"></div><div class="line">// Commands to send to OTHER port.</div><div class="line">#define MS_SIM_POWER_ON         1</div><div class="line">#define MS_SIM_POWER_OFF        2</div><div class="line">#define MS_SIM_TPM_SEND_COMMAND 8</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>and what is TCTI(TPM Command Transmission Interface):<br><img src="https://github.com/intel/tpm2-tss/blob/master/doc/TSS%20block%20diagram.png" alt="Architecture Diagram"></p>
 <h1 id="Troubleshootings"><a href="#Troubleshootings" class="headerlink" title="Troubleshootings"></a>Troubleshootings</h1><h2 id="Failed-initialization"><a href="#Failed-initialization" class="headerlink" title="Failed initialization"></a>Failed initialization</h2><p>Sometimes it shows, </p>
 <pre><code>$ tpm2_listpcrs
 Resource Mgr, resMgr, failed initialization: 0x1.  Exiting...
@@ -170,6 +173,8 @@ Resource Mgr, device TCTI, failed initialization: 0xa000a.  Exiting...
 <li>IBM’s Trousers for TPM 2.0 - <a href="https://sourceforge.net/projects/ibmtpm20tss/?source=navbar" target="_blank" rel="external">https://sourceforge.net/projects/ibmtpm20tss/?source=navbar</a></li>
 <li>An Introduction to programming the TPM - <a href="https://www.cylab.cmu.edu/tiw/slides/challener-TPM.pdf" target="_blank" rel="external">https://www.cylab.cmu.edu/tiw/slides/challener-TPM.pdf</a></li>
 <li>A Practical Guide to TPM 2.0 </li>
+<li>The TCTI Specification - <a href="https://trustedcomputinggroup.org/wp-content/uploads/TSS_TCTI_v1.0_r04_Public-Review.pdf" target="_blank" rel="external">https://trustedcomputinggroup.org/wp-content/uploads/TSS_TCTI_v1.0_r04_Public-Review.pdf</a></li>
+<li>The SAPI Specification - <a href="https://trustedcomputinggroup.org/wp-content/uploads/TSS_SAPI_v1.1_r21_Public_Review.pdf" target="_blank" rel="external">https://trustedcomputinggroup.org/wp-content/uploads/TSS_SAPI_v1.1_r21_Public_Review.pdf</a></li>
 </ul>
 
       
@@ -829,14 +834,14 @@ Starting program: /home/ohpato/c_cpp/divzero
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="search" name="q" results="0" placeholder="Search">
     <input type="hidden" name="q" value="site:aintahydra.github.io">
   </form>
 </div>
 
   
 <div class="widget tag">
-  <h3 class="title">Kategorien</h3>
+  <h3 class="title">Categories</h3>
   <ul class="entry">
   
     <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
