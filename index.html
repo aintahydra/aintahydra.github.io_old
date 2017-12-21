@@ -87,8 +87,21 @@ tcp        0      0 127.0.0.1:2323          0.0.0.0:*               LISTEN      
 tcp        0      0 127.0.0.1:2324          0.0.0.0:*               LISTEN      -                   
 tcp        0      0 127.0.0.1:631           0.0.0.0:*               LISTEN      -                   
 ...
-</code></pre><p>2323 should be the platform port and 2324 should be the command port</p>
-<h2 id="Value-listings"><a href="#Value-listings" class="headerlink" title="Value listings"></a>Value listings</h2><p>Listing up PCR values </p>
+</code></pre><p>It seems tpm software uses arounds 2321 ports. Here, 2323 and 2324 should be the tpm ports. Some code examples use 2321 for both of the platform port and the command port, while some use one for the platform port, and the other is the command port. The command port seems to use +1 port of the platform port. So, here 2323 must be the platform port and 2324 must be the command port. We will figure this out below by running a simple code snippet.</p>
+<pre><code>$ journalctl | grep resourcemgr
+... resourcemgr[3073]: Initializing device TCTI Interface
+... resourcemgr[3073]: Initializing Resource Manager
+... resourcemgr[3073]: maxActiveSessions = 64
+... resourcemgr[3073]: gapMaxValue = 65535
+... resourcemgr[3073]: socket created:  0x4
+... resourcemgr[3073]: bind to IP address:port:  127.0.0.1:2324
+... resourcemgr[3073]: Other CMD server listening to socket:  0x4
+... resourcemgr[3073]: socket created:  0x5
+... resourcemgr[3073]: bind to IP address:port:  127.0.0.1:2323
+... resourcemgr[3073]: TPM CMD server listening to socket:  0x5
+... resourcemgr[3073]: Starting SockServer (TPM CMD), socket: 0x5.
+... resourcemgr[3073]: Starting SockServer (Other CMD), socket: 0x4.
+</code></pre><h2 id="Value-listings"><a href="#Value-listings" class="headerlink" title="Value listings"></a>Value listings</h2><p>Listing up PCR values </p>
 <pre><code>$ tpm2_listpcrs
 Bank/Algorithm: TPM_ALG_SHA1(0x0004)
 PCR_00:   ...
@@ -130,7 +143,19 @@ $ hexdump -C ~/hash.out
 00000000  14 00 a0 b6 59 39 67 0b  c2 c0 10 f4 d5 d6 a0 b3  |....Y9g.........|
 00000010  e4 e4 59 0f b9 2b 00 00  00 00 00 00 00 00 00 00  |..Y..+..........|
 00000020  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
-</code></pre><h1 id="Troubleshootings"><a href="#Troubleshootings" class="headerlink" title="Troubleshootings"></a>Troubleshootings</h1><h2 id="Failed-initialization"><a href="#Failed-initialization" class="headerlink" title="Failed initialization"></a>Failed initialization</h2><p>Sometimes it shows, </p>
+</code></pre><h2 id="testing-the-communication-through-ports"><a href="#testing-the-communication-through-ports" class="headerlink" title="testing the communication through ports"></a>testing the communication through ports</h2><p>Based on the code snippet in “A Practical Guide to TPM 2.0”:<br>```<br>import os<br>import sys<br>import socket<br>from socket import socket, AF_INET, SOCK_STREAM</p>
+<p>platformSock = socket(AF_INET, SOCK_STREAM)<br>platformSock.connect((‘localhost’, 2324))</p>
+<h1 id="Power-on-the-TPM"><a href="#Power-on-the-TPM" class="headerlink" title="Power on the TPM"></a>Power on the TPM</h1><p>platformSock.send(‘\0\0\0\1’)</p>
+<p>tpmSock = socket(AF_INET, SOCK_STREAM)<br>tpmSock.connect((‘localhost’, 2323))</p>
+<h1 id="Send-TPM-SEND-COMMAND"><a href="#Send-TPM-SEND-COMMAND" class="headerlink" title="Send TPM_SEND_COMMAND"></a>Send TPM_SEND_COMMAND</h1><p>tpmSock.send(‘\x00\x00\x00\x08’)</p>
+<h1 id="Send-locality"><a href="#Send-locality" class="headerlink" title="Send locality"></a>Send locality</h1><p>tpmSock.send(‘\x03’)</p>
+<h1 id="Send-of-bytes-12-bytes-The-size-of-the-following-commands-2-4-4-2"><a href="#Send-of-bytes-12-bytes-The-size-of-the-following-commands-2-4-4-2" class="headerlink" title="Send # of bytes : 12 bytes (The size of the following commands - 2 + 4 + 4 + 2)"></a>Send # of bytes : 12 bytes (The size of the following commands - 2 + 4 + 4 + 2)</h1><p>tpmSock.send(‘\x00\x00\x00\x0c’)</p>
+<h1 id="TPM-ST-Structure-Tags"><a href="#TPM-ST-Structure-Tags" class="headerlink" title="TPM_ST (Structure Tags)"></a>TPM_ST (Structure Tags)</h1><h1 id="TPM2-ST-NO-SESSIONS-UINT16-0x8001-Table-19-TPM-2-0-Part-2-v01-38"><a href="#TPM2-ST-NO-SESSIONS-UINT16-0x8001-Table-19-TPM-2-0-Part-2-v01-38" class="headerlink" title="TPM2_ST_NO_SESSIONS : (UINT16)(0x8001) - Table 19 @ TPM 2.0 Part 2 v01.38"></a>TPM2_ST_NO_SESSIONS : (UINT16)(0x8001) - Table 19 @ TPM 2.0 Part 2 v01.38</h1><h1 id="command-response-has-no-attached-sessions"><a href="#command-response-has-no-attached-sessions" class="headerlink" title="command/response has no attached sessions"></a>command/response has no attached sessions</h1><h1 id="and-no-authorizationSize-parameterSize-value-is-present"><a href="#and-no-authorizationSize-parameterSize-value-is-present" class="headerlink" title="and no authorizationSize/parameterSize value is present"></a>and no authorizationSize/parameterSize value is present</h1><p>tpmSock.send(‘\x80\x01’)</p>
+<h1 id="TPM-PS-Platform-Specific"><a href="#TPM-PS-Platform-Specific" class="headerlink" title="TPM_PS (Platform Specific)"></a>TPM_PS (Platform Specific)</h1><h1 id="TPM2-PS-VIRTUALIZATION-UINT32-0x0000000C-Table-25-TPM-2-0-Part-2-v01-38"><a href="#TPM2-PS-VIRTUALIZATION-UINT32-0x0000000C-Table-25-TPM-2-0-Part-2-v01-38" class="headerlink" title="TPM2_PS_VIRTUALIZATION : (UINT32)(0x0000000C) - Table 25 @ TPM 2.0 Part 2 v01.38"></a>TPM2_PS_VIRTUALIZATION : (UINT32)(0x0000000C) - Table 25 @ TPM 2.0 Part 2 v01.38</h1><p>tpmSock.send(‘\x00\x00\x00\x0c’)</p>
+<h1 id="Start-up-———"><a href="#Start-up-———" class="headerlink" title="Start up ———-"></a>Start up ———-</h1><h1 id="TPM2-CC-Startup-UINT32-0x00000144-Table-12-TPM-2-0-Part-2-v01-38"><a href="#TPM2-CC-Startup-UINT32-0x00000144-Table-12-TPM-2-0-Part-2-v01-38" class="headerlink" title="TPM2_CC_Startup : (UINT32)(0x00000144) - Table 12 @ TPM 2.0 Part 2 v01.38"></a>TPM2_CC_Startup : (UINT32)(0x00000144) - Table 12 @ TPM 2.0 Part 2 v01.38</h1><p>tpmSock.send(‘\x00\x00\x01\x44’)</p>
+<h1 id="TPM-SU-Startup-Type"><a href="#TPM-SU-Startup-Type" class="headerlink" title="TPM_SU (Startup Type)"></a>TPM_SU (Startup Type)</h1><h1 id="TPM-SU-CLEAR-UINT16-0x0000-Table-20-TPM-2-0-Part-2-v01-38"><a href="#TPM-SU-CLEAR-UINT16-0x0000-Table-20-TPM-2-0-Part-2-v01-38" class="headerlink" title="TPM_SU_CLEAR : (UINT16) 0x0000 - Table 20 @ TPM 2.0 Part 2 v01.38"></a>TPM_SU_CLEAR : (UINT16) 0x0000 - Table 20 @ TPM 2.0 Part 2 v01.38</h1><p>tpmSock.send(‘\x00\x00’)</p>
+<h1 id="Receive-the-size-of-the-response-the-response-and-4-bytes-of-0’s"><a href="#Receive-the-size-of-the-response-the-response-and-4-bytes-of-0’s" class="headerlink" title="Receive the size of the response, the response, and 4 bytes of 0’s"></a>Receive the size of the response, the response, and 4 bytes of 0’s</h1><p>reply=tpmSock.recv(18)<br>for c in reply:<br>    print “%#x “ % ord(c)</p>
+<h1 id="Troubleshootings"><a href="#Troubleshootings" class="headerlink" title="Troubleshootings"></a>Troubleshootings</h1><h2 id="Failed-initialization"><a href="#Failed-initialization" class="headerlink" title="Failed initialization"></a>Failed initialization</h2><p>Sometimes it shows, </p>
 <pre><code>$ tpm2_listpcrs
 Resource Mgr, resMgr, failed initialization: 0x1.  Exiting...
 </code></pre><p>Then, restart the resource manager service.</p>
@@ -828,8 +853,6 @@ Starting program: /home/ohpato/c_cpp/divzero
   
     <li><a href="/categories/python/">python</a><small>1</small></li>
   
-    <li><a href="/categories/tpm/">tpm</a><small>0</small></li>
-  
   </ul>
 </div>
 
@@ -866,8 +889,6 @@ Starting program: /home/ohpato/c_cpp/divzero
     <li><a href="/tags/python/">python</a><small>1</small></li>
   
     <li><a href="/tags/scrapy/">scrapy</a><small>1</small></li>
-  
-    <li><a href="/tags/tpm/">tpm</a><small>0</small></li>
   
     <li><a href="/tags/xpath/">xpath</a><small>1</small></li>
   
