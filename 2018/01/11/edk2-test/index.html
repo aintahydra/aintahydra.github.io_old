@@ -1,0 +1,398 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>edk2-test | aintahydra - dont talk shit</title>
+  <meta name="author" content="aintahydra">
+  
+  <meta name="description" content="Environment
+Ubuntu 17.10 on the Intel Compute Stick
+4.13.0-21-generic
+Python 2.7.14
+
+Get Ready
+Install necessary packages: build-essential uuid-dev ia">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="edk2-test"/>
+  <meta property="og:site_name" content="aintahydra - dont talk shit"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="aintahydra - dont talk shit" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">aintahydra - dont talk shit</a></h1>
+  <h2><a href="/">They seemed to insist upon his being but a mere __daily breader__,&#34; who was trudging home to snatch a few hours&#39; sleep before hurrying off to catch the train to his work. -- _Horace W. C. Newte, The Square Mile, A Story of Ways and Means, 1908_</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2018-01-11T06:47:27.000Z"><a href="/2018/01/11/edk2-test/">2018-01-11</a></time>
+      
+      
+  
+    <h1 class="title">edk2-test</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h1><ul>
+<li>Ubuntu 17.10 on the Intel Compute Stick</li>
+<li>4.13.0-21-generic</li>
+<li>Python 2.7.14</li>
+</ul>
+<h1 id="Get-Ready"><a href="#Get-Ready" class="headerlink" title="Get Ready"></a>Get Ready</h1><ol>
+<li><p>Install necessary packages: build-essential uuid-dev iasl git gcc-5 nasm</p>
+</li>
+<li><p>Get Tianocore EDK II</p>
+<pre>
+ $ cd git
+ $ git clone https://github.com/tianocore/edk2
+</pre>
+</li>
+<li><p>Compile the BaseTools</p>
+<pre>
+ $ cd ~/git/edk2
+ $ make -C BaseTools
+</pre>
+</li>
+<li><p>Setup </p>
+<pre>
+ $ . edksetup.sh
+ WORKSPACE: /home/********/git/edk2
+ EDK_TOOLS_PATH: /home/********/git/edk2/BaseTools
+ CONF_PATH: /home/********/git/edk2/Conf
+ ...
+</pre>
+</li>
+<li><p>Build the Base Tools</p>
+<pre>
+ $ cd ~/git
+ $ make -C edk2/BaseTools
+</pre>
+</li>
+<li><p>Edit the configuration files</p>
+<pre>
+ $ cd ~/git/edk2/Conf
+ $ ls
+ BuildEnv.sh  build_rule.txt  ReadMe.txt  target.txt  tools_def.txt
+ $ cp target.txt target.txt.original
+ $ emacs target.txt
+</pre>
+<pre>
+...
+ACTIVE_PLATFORM       = MdeModulePkg/MdeModulePkg.dsc
+...
+TARGET_ARCH           = X64
+TOOL_CHAIN_CONF       = Conf/tools_def.txt
+TOOL_CHAIN_TAG        = GCC5
+BUILD_RULE_CONF = Conf/build_rule.txt
+...
+</pre>
+</li>
+<li><p>Build Samples</p>
+<pre>
+ $ cd ~/git/edk2
+ $ build
+ ...
+ $ ls Build/MdeModule/DEBUG_GCC5/X64/HelloWorld.efi 
+ HelloWorld.efi 
+</pre>
+
+</li>
+</ol>
+<h1 id="Program-a-Test-Application"><a href="#Program-a-Test-Application" class="headerlink" title="Program a Test Application"></a>Program a Test Application</h1><ol>
+<li><p>Install necessary packages</p>
+<pre>
+ $ sudo apt install python-pip
+ $ sudo pip install -U wxPython
+ $ sudo apt-get install python-wxgtk3.0
+</pre>
+</li>
+<li><p>Download the Wizard</p>
+<pre>
+ $ cd ~/git
+ $ git clone https://github.com/tianocore/edk2-share.git
+ $ cd edk2-share/DriverDeveloper/UefiDriverWizard
+ $ python launch.py
+</pre>
+</li>
+<li><p>After the Wizard launched, select from the menu: [File &gt; Open Workspace] and go to <strong>~/git/edk2</strong></p>
+</li>
+<li><p>Create a new package, from the menu [File &gt; New Package]</p>
+</li>
+<li><p>Press <em>Finish</em> button, then the main pane says the package declaration file and the build description file are created:</p>
+<pre>
+ Create Package MyHelloWorld
+   Create file /home/*****/git/edk2/MyHelloWorld/MyHelloWorld.dec
+   Create file /home/*****/git/edk2/MyHelloWorld/MyHelloWorld.dsc
+</pre>
+</li>
+<li><p>Edit the source file<br><pre><br> $ cd ~/git/edk2/MyHelloWorld<br> $ mkdir -p Library/MyHelloWorld<br> $ emacs Library/MyHelloWorld/MyHelloWorld.c<br></pre></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">#include &lt;Uefi.h&gt;</div><div class="line">#include &lt;Library/UefiApplicationEntryPoint.h&gt;</div><div class="line">#include &lt;Library/UefiLib.h&gt;</div><div class="line">EFI_STATUS</div><div class="line">EFIAPI</div><div class="line">UefiMain (</div><div class="line">  IN EFI_HANDLE            ImageHandle,</div><div class="line">  IN EFI_SYSTEM_TABLE     *SystemTable</div><div class="line">)   </div><div class="line">&#123;</div><div class="line">    Print(L&quot;Dont Talk Shit!\n&quot;);</div><div class="line">    return EFI_SUCCESS;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Edit the build information file<br><pre><br> $ cd ~/git/edk2/MyHelloWorld<br> $ mkdir -p Library/MyHelloWorld<br> $ emacs Library/MyHelloWorld/MyHelloWorld.inf<br></pre></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[Defines]</div><div class="line">    INF_VERSION            =0x00010005</div><div class="line">    BASE_NAME              =MyHelloWorld</div><div class="line">    FILE_GUID              =ef6a784a-f1ee-4f75-ac0b-ba8f0869a2f2</div><div class="line">    MODULE_TYPE            =UEFI_APPLICATION</div><div class="line">    VERSION_STRING         =0.1</div><div class="line">    ENTRY_POINT            =UefiMain</div><div class="line">[Sources]</div><div class="line">    MyHelloWorld.c</div><div class="line">...</div></pre></td></tr></table></figure>
+</li>
+<li><p>Edit the Build Description File<br><pre><br> $ cd ~/git/edk2/MyHelloWorld<br> $ emacs MyHelloWorld.dsc<br></pre></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">[Components]</div><div class="line">MyHelloWorld/Library/MyHelloWorld/MyHelloWorld.inf</div><div class="line"></div><div class="line">[Components.IA32]</div><div class="line">...</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h1><ol>
+<li><p>Check the setup again</p>
+<pre>
+ ~/git/edk2$ . edksetup.sh 
+ Loading previous configuration from /home/*****/git/edk2/Conf/BuildEnv.sh
+ WORKSPACE: /home/*****/git/edk2
+ EDK_TOOLS_PATH: /home/*****/git/edk2/BaseTools
+ CONF_PATH: /home/*****/git/edk2/Conf
+</pre>
+</li>
+<li><p>Build</p>
+<pre>
+ $ build -p MyHelloWorld/MyHelloWorld.dsc
+ ....
+ $ ls Build/MyHelloWorld/DEBUG_GCC5/X64/
+ MdePkg  MyHelloWorld  MyHelloWorld.debug  MyHelloWorld.efi  TOOLS_DEF.X64
+</pre>
+
+</li>
+</ol>
+<h1 id="Run"><a href="#Run" class="headerlink" title="Run"></a>Run</h1><ol>
+<li><p>Move the built image</p>
+<pre>
+ $ cd ~/git/edk2/Build/MyHelloWorld/DEBUG_GCC5/X64
+ $ sudo mkdir -p /boot/efi/EFI/aintahydra
+ $ sudo cp MyHelloWorld.efi /boot/efi/EFI/aintahydra
+</pre>
+</li>
+<li><p>Reboot the system</p>
+</li>
+<li><p>Press <f10> and enter into the Boot Menu</f10></p>
+</li>
+<li><p>Select <strong>UEFI: Built-in EFI Shell</strong></p>
+</li>
+<li><p>Run the efi application file via the shell</p>
+<pre>
+ Shell> fs0:
+ fs0:\> cd EFI
+ fs0:\EFI> cd aintahydra
+ fs0:\EFI\aintahydra> MyHelloWorld.efi
+ Dont Talk Shit!
+</pre>
+
+</li>
+</ol>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ul>
+<li>Installing Tianacore<ul>
+<li><a href="https://github.com/tianocore/tianocore.github.io/wiki/Getting-Started-with-EDK-II" target="_blank" rel="external">https://github.com/tianocore/tianocore.github.io/wiki/Getting-Started-with-EDK-II</a></li>
+<li><a href="https://github.com/tianocore/tianocore.github.io/wiki/Using-EDK-II-with-Native-GCC" target="_blank" rel="external">https://github.com/tianocore/tianocore.github.io/wiki/Using-EDK-II-with-Native-GCC</a></li>
+<li><a href="https://github.com/tianocore/tianocore.github.io/wiki/Common-instructions" target="_blank" rel="external">https://github.com/tianocore/tianocore.github.io/wiki/Common-instructions</a></li>
+</ul>
+</li>
+<li>UEFI Driver Wizard<ul>
+<li><a href="https://github.com/tianocore/tianocore.github.io/wiki/UEFI-Driver-Wizard" target="_blank" rel="external">https://github.com/tianocore/tianocore.github.io/wiki/UEFI-Driver-Wizard</a></li>
+</ul>
+</li>
+<li>Write a test program<ul>
+<li><a href="https://wikileaks.org/ciav7p1/cms/page_27262984.html" target="_blank" rel="external">https://wikileaks.org/ciav7p1/cms/page_27262984.html</a></li>
+</ul>
+</li>
+<li>How To Run<ul>
+<li><a href="https://www.rodsbooks.com/efi-programming/hello.html" target="_blank" rel="external">https://www.rodsbooks.com/efi-programming/hello.html</a></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/test/">test</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/compute-stick/">compute stick</a>, <a href="/tags/UEFI/">UEFI</a>, <a href="/tags/EFI/">EFI</a>, <a href="/tags/tianocore/">tianocore</a>, <a href="/tags/edk/">edk</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://aintahydra.github.io/2018/01/11/edk2-test/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="hidden" name="q" value="site:aintahydra.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Kategorien</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
+  
+    <li><a href="/categories/TPM/">TPM</a><small>2</small></li>
+  
+    <li><a href="/categories/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/test/">test</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/EFI/">EFI</a><small>1</small></li>
+  
+    <li><a href="/tags/TAGS/">TAGS</a><small>1</small></li>
+  
+    <li><a href="/tags/TPM/">TPM</a><small>2</small></li>
+  
+    <li><a href="/tags/TSS/">TSS</a><small>1</small></li>
+  
+    <li><a href="/tags/Trusted-Platform-Module/">Trusted Platform Module</a><small>1</small></li>
+  
+    <li><a href="/tags/UEFI/">UEFI</a><small>1</small></li>
+  
+    <li><a href="/tags/auctex/">auctex</a><small>1</small></li>
+  
+    <li><a href="/tags/compute-stick/">compute stick</a><small>2</small></li>
+  
+    <li><a href="/tags/crawler/">crawler</a><small>1</small></li>
+  
+    <li><a href="/tags/ctag/">ctag</a><small>1</small></li>
+  
+    <li><a href="/tags/edk/">edk</a><small>1</small></li>
+  
+    <li><a href="/tags/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/tags/etag/">etag</a><small>1</small></li>
+  
+    <li><a href="/tags/gdb/">gdb</a><small>1</small></li>
+  
+    <li><a href="/tags/latex/">latex</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/scrapy/">scrapy</a><small>1</small></li>
+  
+    <li><a href="/tags/tianocore/">tianocore</a><small>1</small></li>
+  
+    <li><a href="/tags/xpath/">xpath</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2018 aintahydra
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
