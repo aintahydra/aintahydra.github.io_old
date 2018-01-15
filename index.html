@@ -50,6 +50,50 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2018-01-15T14:46:00.000Z"><a href="/2018/01/15/vmware-12-5-and-kernel-4-13/">2018-01-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2018/01/15/vmware-12-5-and-kernel-4-13/">vmware-12.5-and-kernel-4.13</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h1><p>After updating the kernel to 4.13, VMware Workstation failed to start. After the update, VMware showed a popup window saying that it requires a module compilation, and then ended up with compilation error<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:639:14: error: passing argument 1 of ‘atomic_inc’ from incompatible pointer type [-Werror=incompatible-pointer-types]</div><div class="line">   atomic_inc(&amp;clone-&gt;users);</div><div class="line">              ^</div><div class="line">In file included from ./include/linux/atomic.h:4:0,</div><div class="line">                 from ./include/linux/rcupdate.h:38,</div><div class="line">                 from ./include/linux/rculist.h:10,</div><div class="line">                 from ./include/linux/pid.h:4,</div><div class="line">                 from ./include/linux/sched.h:13,</div><div class="line">                 from /tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:25:</div><div class="line">./arch/x86/include/asm/atomic.h:89:29: note: expected ‘atomic_t * &#123;aka struct &lt;anonymous&gt; *&#125;’ but argument is of type ‘refcount_t * &#123;aka struct refcount_struct *&#125;’</div><div class="line"> static __always_inline void atomic_inc(atomic_t *v)</div><div class="line">                             ^</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h1><p>There is a patch: </p>
+<ul>
+<li><a href="https://communities.vmware.com/thread/568089" target="_blank" rel="external">https://communities.vmware.com/thread/568089</a></li>
+<li><a href="https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip" target="_blank" rel="external">https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip</a><br>Also there is another patch for a memory error: </li>
+<li><a href="https://superuser.com/questions/1258310/vware-workstation-14-and-new-hostif-c-on-kernel-4-13-for-fixing-a-memory-error" target="_blank" rel="external">https://superuser.com/questions/1258310/vware-workstation-14-and-new-hostif-c-on-kernel-4-13-for-fixing-a-memory-error</a></li>
+<li><a href="https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c" target="_blank" rel="external">https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c</a><h1 id="How-to"><a href="#How-to" class="headerlink" title="How-to"></a>How-to</h1>Ref: <a href="https://iesodias.wordpress.com/2017/12/05/linux-host-kernel-4-13-rc1-breaks-vmnet-vmware-workstation-12/" target="_blank" rel="external">https://iesodias.wordpress.com/2017/12/05/linux-host-kernel-4-13-rc1-breaks-vmnet-vmware-workstation-12/</a></li>
+</ul>
+<h3 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h3><p>Use the patch at <a href="https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip" target="_blank" rel="external">https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -xvf /usr/lib/vmware/modules/source/vmmon.tar --directory /usr/lib/vmware/modules/source</div><div class="line">$ cd /usr/lib/vmware/modules/source/vmnet-only/</div><div class="line">$ patch -p0 -i /home/user/Desktop/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch</div><div class="line">$ sudo make</div><div class="line">$ sudo cp -p vmnet.ko /lib/modules/`uname -r`/misc</div></pre></td></tr></table></figure></p>
+<h3 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h3><p>Replace hostif.c with the downloaded version at <a href="https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c" target="_blank" rel="external">https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -xvf /usr/lib/vmware/modules/source/vmmon.tar --directory /usr/lib/vmware/modules/source</div><div class="line">$ cd /usr/lib/vmware/modules/source/vmmon-only/</div><div class="line">$ sudo cp -p /home/user/Desktop/vmwarepatchfiles/hostif.c /usr/lib/vmware/modules/source/vmmon-only/linux/hostif.c</div><div class="line">$ sudo make</div><div class="line">$ sudo cp -p vmmon.ko /lib/modules/`uname -r`/misc</div></pre></td></tr></table></figure>
+<h3 id="Finally"><a href="#Finally" class="headerlink" title="Finally"></a>Finally</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo depmod -a</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2018-01-11T06:47:27.000Z"><a href="/2018/01/11/edk2-test/">2018-01-11</a></time>
       
       
@@ -1080,6 +1124,8 @@ Starting program: /home/ohpato/c_cpp/divzero
   
     <li><a href="/categories/test/">test</a><small>1</small></li>
   
+    <li><a href="/categories/tips/">tips</a><small>1</small></li>
+  
   </ul>
 </div>
 
@@ -1124,6 +1170,8 @@ Starting program: /home/ohpato/c_cpp/divzero
     <li><a href="/tags/scrapy/">scrapy</a><small>1</small></li>
   
     <li><a href="/tags/tianocore/">tianocore</a><small>1</small></li>
+  
+    <li><a href="/tags/vmware/">vmware</a><small>1</small></li>
   
     <li><a href="/tags/xpath/">xpath</a><small>1</small></li>
   

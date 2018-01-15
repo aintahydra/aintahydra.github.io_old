@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>vmware-12.5-and-kernel-4.13 | aintahydra - dont talk shit</title>
+  <meta name="author" content="aintahydra">
+  
+  <meta name="description" content="IssueAfter updating the kernel to 4.13, VMware Workstation failed to start. After the update, VMware showed a popup window saying that it requires a m">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="vmware-12.5-and-kernel-4.13"/>
+  <meta property="og:site_name" content="aintahydra - dont talk shit"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="aintahydra - dont talk shit" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">aintahydra - dont talk shit</a></h1>
+  <h2><a href="/">They seemed to insist upon his being but a mere __daily breader__,&#34; who was trudging home to snatch a few hours&#39; sleep before hurrying off to catch the train to his work. -- _Horace W. C. Newte, The Square Mile, A Story of Ways and Means, 1908_</a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2018-01-15T14:46:00.000Z"><a href="/2018/01/15/vmware-12-5-and-kernel-4-13/">2018-01-15</a></time>
+      
+      
+  
+    <h1 class="title">vmware-12.5-and-kernel-4.13</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h1><p>After updating the kernel to 4.13, VMware Workstation failed to start. After the update, VMware showed a popup window saying that it requires a module compilation, and then ended up with compilation error<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:639:14: error: passing argument 1 of ‘atomic_inc’ from incompatible pointer type [-Werror=incompatible-pointer-types]</div><div class="line">   atomic_inc(&amp;clone-&gt;users);</div><div class="line">              ^</div><div class="line">In file included from ./include/linux/atomic.h:4:0,</div><div class="line">                 from ./include/linux/rcupdate.h:38,</div><div class="line">                 from ./include/linux/rculist.h:10,</div><div class="line">                 from ./include/linux/pid.h:4,</div><div class="line">                 from ./include/linux/sched.h:13,</div><div class="line">                 from /tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:25:</div><div class="line">./arch/x86/include/asm/atomic.h:89:29: note: expected ‘atomic_t * &#123;aka struct &lt;anonymous&gt; *&#125;’ but argument is of type ‘refcount_t * &#123;aka struct refcount_struct *&#125;’</div><div class="line"> static __always_inline void atomic_inc(atomic_t *v)</div><div class="line">                             ^</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h1><p>There is a patch: </p>
+<ul>
+<li><a href="https://communities.vmware.com/thread/568089" target="_blank" rel="external">https://communities.vmware.com/thread/568089</a></li>
+<li><a href="https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip" target="_blank" rel="external">https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip</a><br>Also there is another patch for a memory error: </li>
+<li><a href="https://superuser.com/questions/1258310/vware-workstation-14-and-new-hostif-c-on-kernel-4-13-for-fixing-a-memory-error" target="_blank" rel="external">https://superuser.com/questions/1258310/vware-workstation-14-and-new-hostif-c-on-kernel-4-13-for-fixing-a-memory-error</a></li>
+<li><a href="https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c" target="_blank" rel="external">https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c</a><h1 id="How-to"><a href="#How-to" class="headerlink" title="How-to"></a>How-to</h1>Ref: <a href="https://iesodias.wordpress.com/2017/12/05/linux-host-kernel-4-13-rc1-breaks-vmnet-vmware-workstation-12/" target="_blank" rel="external">https://iesodias.wordpress.com/2017/12/05/linux-host-kernel-4-13-rc1-breaks-vmnet-vmware-workstation-12/</a></li>
+</ul>
+<h3 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h3><p>Use the patch at <a href="https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip" target="_blank" rel="external">https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -xvf /usr/lib/vmware/modules/source/vmmon.tar --directory /usr/lib/vmware/modules/source</div><div class="line">$ cd /usr/lib/vmware/modules/source/vmnet-only/</div><div class="line">$ patch -p0 -i /home/user/Desktop/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch</div><div class="line">$ sudo make</div><div class="line">$ sudo cp -p vmnet.ko /lib/modules/`uname -r`/misc</div></pre></td></tr></table></figure></p>
+<h3 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h3><p>Replace hostif.c with the downloaded version at <a href="https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c" target="_blank" rel="external">https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -xvf /usr/lib/vmware/modules/source/vmmon.tar --directory /usr/lib/vmware/modules/source</div><div class="line">$ cd /usr/lib/vmware/modules/source/vmmon-only/</div><div class="line">$ sudo cp -p /home/user/Desktop/vmwarepatchfiles/hostif.c /usr/lib/vmware/modules/source/vmmon-only/linux/hostif.c</div><div class="line">$ sudo make</div><div class="line">$ sudo cp -p vmmon.ko /lib/modules/`uname -r`/misc</div></pre></td></tr></table></figure>
+<h3 id="Finally"><a href="#Finally" class="headerlink" title="Finally"></a>Finally</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo depmod -a</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/tips/">tips</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/vmware/">vmware</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">Kommentare</h1>
+
+  
+      <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=123456789012345";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div class="fb-comments" data-href="http://aintahydra.github.io/2018/01/15/vmware-12-5-and-kernel-4-13/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+      
+  
+</section>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Suche">
+    <input type="hidden" name="q" value="site:aintahydra.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Kategorien</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
+  
+    <li><a href="/categories/TPM/">TPM</a><small>2</small></li>
+  
+    <li><a href="/categories/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/categories/python/">python</a><small>1</small></li>
+  
+    <li><a href="/categories/test/">test</a><small>1</small></li>
+  
+    <li><a href="/categories/tips/">tips</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/EFI/">EFI</a><small>1</small></li>
+  
+    <li><a href="/tags/TAGS/">TAGS</a><small>1</small></li>
+  
+    <li><a href="/tags/TPM/">TPM</a><small>2</small></li>
+  
+    <li><a href="/tags/TSS/">TSS</a><small>1</small></li>
+  
+    <li><a href="/tags/Trusted-Platform-Module/">Trusted Platform Module</a><small>1</small></li>
+  
+    <li><a href="/tags/UEFI/">UEFI</a><small>1</small></li>
+  
+    <li><a href="/tags/auctex/">auctex</a><small>1</small></li>
+  
+    <li><a href="/tags/compute-stick/">compute stick</a><small>2</small></li>
+  
+    <li><a href="/tags/crawler/">crawler</a><small>1</small></li>
+  
+    <li><a href="/tags/ctag/">ctag</a><small>1</small></li>
+  
+    <li><a href="/tags/edk/">edk</a><small>1</small></li>
+  
+    <li><a href="/tags/emacs/">emacs</a><small>3</small></li>
+  
+    <li><a href="/tags/etag/">etag</a><small>1</small></li>
+  
+    <li><a href="/tags/gdb/">gdb</a><small>1</small></li>
+  
+    <li><a href="/tags/latex/">latex</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/scrapy/">scrapy</a><small>1</small></li>
+  
+    <li><a href="/tags/tianocore/">tianocore</a><small>1</small></li>
+  
+    <li><a href="/tags/vmware/">vmware</a><small>1</small></li>
+  
+    <li><a href="/tags/xpath/">xpath</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2018 aintahydra
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
