@@ -50,6 +50,54 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2018-06-26T16:28:25.000Z"><a href="/2018/06/27/proofgeneral-on-osx/">2018-06-27</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2018/06/27/proofgeneral-on-osx/">proofgeneral-on-osx</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h1 id="Installation-coq-and-proof-general"><a href="#Installation-coq-and-proof-general" class="headerlink" title="Installation (coq and proof-general)"></a>Installation (coq and proof-general)</h1><pre><code>$ brew install coq
+$ brew install proof-general
+</code></pre><h1 id="Use"><a href="#Use" class="headerlink" title="Use"></a>Use</h1><pre><code>$ proofgeneral
+</code></pre><h1 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h1><p>(When a “.v” file is read, it automatically changes to the “coq-mode”. Also, possible to change it manually by “M-x coq-mode”)</p>
+<p>Open a new file “test.v” and type an example(from the book “Software Foundations”)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Inductive day : Type :=</div><div class="line">| monday : day</div><div class="line">| tuesday : day</div><div class="line">| wednesday : day</div><div class="line">| thursday : day</div><div class="line">| friday : day</div><div class="line">| saturday : day</div><div class="line">| sunday : day.</div><div class="line"></div><div class="line">Definition next_day (d:day) : day :=</div><div class="line">  match d with</div><div class="line">  | monday =&gt; tuesday</div><div class="line">  | tuesday =&gt; wednesday</div><div class="line">  | wednesday =&gt; thursday</div><div class="line">  | thursday =&gt; friday</div><div class="line">  | friday =&gt; saturday</div><div class="line">  | saturday =&gt; sunday</div><div class="line">  | sunday =&gt; monday</div><div class="line">  end.</div><div class="line"></div><div class="line">Compute (next_day friday).</div></pre></td></tr></table></figure>
+<p>Now it’s ready to do interactive proof.</p>
+<p>Keys (Keyboard shortcuts: “C-h m”):</p>
+<ul>
+<li>C-c C-n : Next Step</li>
+<li>C-c C-ENTER : Go to the point</li>
+<li>C-c C-p : Display Proof State</li>
+<li>C-c C-t : Display Context</li>
+<li>C-c C-u : Undo Step</li>
+<li>C-c C-r : Retract Buffer</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2018-01-15T14:46:00.000Z"><a href="/2018/01/15/vmware-12-5-and-kernel-4-13/">2018-01-15</a></time>
       
       
@@ -60,18 +108,57 @@
     </header>
     <div class="entry">
       
-        <h1 id="Issue"><a href="#Issue" class="headerlink" title="Issue"></a>Issue</h1><p>After updating the kernel to 4.13, VMware Workstation failed to start. After the update, VMware showed a popup window saying that it requires a module compilation, and then ended up with compilation error<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:639:14: error: passing argument 1 of ‘atomic_inc’ from incompatible pointer type [-Werror=incompatible-pointer-types]</div><div class="line">   atomic_inc(&amp;clone-&gt;users);</div><div class="line">              ^</div><div class="line">In file included from ./include/linux/atomic.h:4:0,</div><div class="line">                 from ./include/linux/rcupdate.h:38,</div><div class="line">                 from ./include/linux/rculist.h:10,</div><div class="line">                 from ./include/linux/pid.h:4,</div><div class="line">                 from ./include/linux/sched.h:13,</div><div class="line">                 from /tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:25:</div><div class="line">./arch/x86/include/asm/atomic.h:89:29: note: expected ‘atomic_t * &#123;aka struct &lt;anonymous&gt; *&#125;’ but argument is of type ‘refcount_t * &#123;aka struct refcount_struct *&#125;’</div><div class="line"> static __always_inline void atomic_inc(atomic_t *v)</div><div class="line">                             ^</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<h1 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h1><p>There is a patch: </p>
+        <h1 id="Shortly"><a href="#Shortly" class="headerlink" title="Shortly"></a>Shortly</h1><p>helpful articles are out there:</p>
 <ul>
-<li><a href="https://communities.vmware.com/thread/568089" target="_blank" rel="external">https://communities.vmware.com/thread/568089</a></li>
-<li><a href="https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip" target="_blank" rel="external">https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip</a><br>Also there is another patch for a memory error: </li>
-<li><a href="https://superuser.com/questions/1258310/vware-workstation-14-and-new-hostif-c-on-kernel-4-13-for-fixing-a-memory-error" target="_blank" rel="external">https://superuser.com/questions/1258310/vware-workstation-14-and-new-hostif-c-on-kernel-4-13-for-fixing-a-memory-error</a></li>
-<li><a href="https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c" target="_blank" rel="external">https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c</a><h1 id="How-to"><a href="#How-to" class="headerlink" title="How-to"></a>How-to</h1>Ref: <a href="https://iesodias.wordpress.com/2017/12/05/linux-host-kernel-4-13-rc1-breaks-vmnet-vmware-workstation-12/" target="_blank" rel="external">https://iesodias.wordpress.com/2017/12/05/linux-host-kernel-4-13-rc1-breaks-vmnet-vmware-workstation-12/</a></li>
+<li>Dealing with:<ul>
+<li>vmmon problem: <a href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1715552/comments/17" target="_blank" rel="external">https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1715552/comments/17</a></li>
+<li>vmnet problem: </li>
+<li>“Not enough physical memory is available”: <a href="https://communities.vmware.com/thread/573281" target="_blank" rel="external">https://communities.vmware.com/thread/573281</a></li>
 </ul>
-<h3 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h3><p>Use the patch at <a href="https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip" target="_blank" rel="external">https://communities.vmware.com/servlet/JiveServlet/download/2688951-180357/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch.zip</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -xvf /usr/lib/vmware/modules/source/vmmon.tar --directory /usr/lib/vmware/modules/source</div><div class="line">$ cd /usr/lib/vmware/modules/source/vmnet-only/</div><div class="line">$ patch -p0 -i ~/Downloads/VMware-Workstation-12.5.7-kernel4.13-atomic-inc.patch</div><div class="line">$ sudo make</div><div class="line">$ sudo cp -p vmnet.ko /lib/modules/`uname -r`/misc</div></pre></td></tr></table></figure></p>
-<h3 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h3><p>Replace hostif.c with the downloaded version at <a href="https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c" target="_blank" rel="external">https://github.com/mkubecek/vmware-host-modules/blob/b50848c985f1a6c0a341187346d77f0119d0a835/vmmon-only/linux/hostif.c</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ sudo tar -xvf /usr/lib/vmware/modules/source/vmmon.tar --directory /usr/lib/vmware/modules/source</div><div class="line">$ cd /usr/lib/vmware/modules/source/vmmon-only/</div><div class="line">$ sudo cp -p ~/Downloads/hostif.c /usr/lib/vmware/modules/source/vmmon-only/linux/hostif.c</div><div class="line">$ sudo make</div><div class="line">$ sudo cp -p vmmon.ko /lib/modules/`uname -r`/misc</div></pre></td></tr></table></figure>
-<h3 id="Finally"><a href="#Finally" class="headerlink" title="Finally"></a>Finally</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo depmod -a</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="Issue1-vmmon"><a href="#Issue1-vmmon" class="headerlink" title="Issue1: vmmon"></a>Issue1: vmmon</h1><p>After updating VMware Workstation from 12.5.7 to 12.5.9, it failed to start saying that it requires a module compilation. It seems it tries to build vmmon and vmnet, but ended up with compilation errors. The current kernel is 4.13.0-26-generic .</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:639:14: error: passing argument 1 of ‘atomic_inc’ from incompatible pointer type [-Werror=incompatible-pointer-types]</div><div class="line">   atomic_inc(&amp;clone-&gt;users);</div><div class="line">              ^</div><div class="line">In file included from ./include/linux/atomic.h:4:0,</div><div class="line">                 from ./include/linux/rcupdate.h:38,</div><div class="line">                 from ./include/linux/rculist.h:10,</div><div class="line">                 from ./include/linux/pid.h:4,</div><div class="line">                 from ./include/linux/sched.h:13,</div><div class="line">                 from /tmp/modconfig-J9ZuoG/vmnet-only/bridge.c:25:</div><div class="line">./arch/x86/include/asm/atomic.h:89:29: note: expected ‘atomic_t * &#123;aka struct &lt;anonymous&gt; *&#125;’ but argument is of type ‘refcount_t * &#123;aka struct refcount_struct *&#125;’</div><div class="line"> static __always_inline void atomic_inc(atomic_t *v)</div><div class="line">                             ^</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>To deal with it, modify the hostif.c file and build it:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ cd /tmp</div><div class="line">$ cp /usr/lib/vmware/modules/source/vmmon.tar .</div><div class="line">$ tar xf vmmon.tar</div><div class="line">$ rm vmmon.tar</div><div class="line">$ wget https://raw.githubusercontent.com/mkubecek/vmware-host-modules/fadedd9c8a4dd23f74da2b448572df95666dfe12/vmmon-only/linux/hostif.c</div><div class="line">$ mv -f hostif.c vmmon-only/linux/hostif.c</div><div class="line">$ tar cf vmmon.tar vmmon-only</div><div class="line">$ rm -fr vmmon-only</div><div class="line">$ sudo mv -f vmmon.tar /usr/lib/vmware/modules/source/vmmon.tar</div><div class="line">$ sudo vmware-modconfig --console --install-all</div></pre></td></tr></table></figure>
+<h1 id="Issue2-vmnet"><a href="#Issue2-vmnet" class="headerlink" title="Issue2: vmnet"></a>Issue2: vmnet</h1><p>After compiling vmmon, VMware failed to build vmnet.</p>
+<p>Solution:</p>
+<p>(as root)</p>
+<pre><code># cd /usr/lib/vmware/modules/source:
+# tar cf vmnet.tar
+</code></pre><p>Edit vmnet-only/bridge.c:</p>
+<p>(Line 639) replace:</p>
+<pre><code>atomic_inc(&amp;clone-&gt;users);
+</code></pre><p>to</p>
+<pre><code>atomic_inc((atomic_t*)&amp;clone-&gt;users);
+</code></pre><p>then, </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># cd vmnet-only</div><div class="line"># make</div><div class="line"># cd ..</div><div class="line"># cp vmnet.o /lib/modules/4.13.0-16-generic/misc</div><div class="line"># insmod /lib/modules/4.13.0-16-generic/misc/vmnet.o</div></pre></td></tr></table></figure>
+<p>After vmmon and vmnet is built,</p>
+<p>Do</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># rm /usr/lib/vmware/lib/libz.so.1/libz.so.1</div><div class="line"># ln -s /lib/x86_64-linux-gnu/libz.so.1 /usr/lib/vmware/lib/libz.so.1/libz.so.1</div><div class="line">#  vmware-networks --start</div></pre></td></tr></table></figure>
+<p>And execute vmware workstation as a normal user</p>
+<p>   $ /usr/lib/vmware/bin/vmware </p>
+<h3 id="Issue-3-Not-enough-physical-memory-since-last-update-…"><a href="#Issue-3-Not-enough-physical-memory-since-last-update-…" class="headerlink" title="Issue 3: Not enough physical memory since last update …"></a>Issue 3: Not enough physical memory since last update …</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cd /usr/lib/vmware/modules/source</div><div class="line">$ tar xf vmmon.tar</div><div class="line">$ cd vmmon-only/linux</div></pre></td></tr></table></figure>
+<p>Edit vmmon-only/linux/hostif.c : </p>
+<p>at</p>
+<p>   …</p>
+<p>   #include “versioned_atomic.h”</p>
+<p>ADD the followings<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4, 14, 0)</div><div class="line">#   define global_zone_page_state global_page_state</div><div class="line">#endif</div><div class="line"></div><div class="line">static unsigned long get_nr_slab_unreclaimable(void)</div><div class="line">&#123;</div><div class="line">#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(4, 13, 0)</div><div class="line">   return global_node_page_state(NR_SLAB_UNRECLAIMABLE);</div><div class="line">#else</div><div class="line">   return global_page_state(NR_SLAB_UNRECLAIMABLE);</div><div class="line">#endif</div><div class="line">&#125;</div><div class="line"></div><div class="line">static unsigned long get_nr_unevictable(void)</div><div class="line">&#123;</div><div class="line">#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(4, 8, 0)</div><div class="line">   return global_node_page_state(NR_UNEVICTABLE);</div><div class="line">#else</div><div class="line">   return global_page_state(NR_UNEVICTABLE);</div><div class="line">#endif</div><div class="line">&#125;</div><div class="line"></div><div class="line">static unsigned long get_nr_anon_mapped(void)</div><div class="line">&#123;</div><div class="line">#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(4, 8, 0)</div><div class="line">   return global_node_page_state(NR_ANON_MAPPED);</div><div class="line">#else</div><div class="line">   return global_page_state(NR_ANON_PAGES);</div><div class="line">#endif</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>and at</p>
+<pre><code>...
+unsigned int reservedPages = MEMDEFAULTS_MIN_HOST_PAGES;
+
+unsigned int hugePages = (vm == NULL) ? 0 :
+
+   BYTES_2_PAGES(vm-&gt;memInfo.hugePageBytes);
+</code></pre><p>Replace the followings:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">   unsigned int lockedPages = global_page_state(NR_PAGETABLE) +</div><div class="line">                              global_page_state(NR_SLAB_UNRECLAIMABLE) +</div><div class="line">                              global_page_state(NR_UNEVICTABLE) +</div><div class="line">                              hugePages + reservedPages;</div><div class="line">   unsigned int anonPages =</div><div class="line">#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(4, 8, 0)</div><div class="line">      global_page_state(NR_ANON_MAPPED);</div><div class="line">#else</div><div class="line">      global_page_state(NR_ANON_PAGES);</div><div class="line">#endif</div></pre></td></tr></table></figure></p>
+<p>with :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">unsigned int lockedPages = global_zone_page_state(NR_PAGETABLE) +</div><div class="line">                           get_nr_slab_unreclaimable() +</div><div class="line">                           get_nr_unevictable() +</div><div class="line">                           hugePages + reservedPages;</div><div class="line">unsigned int anonPages = get_nr_anon_mapped();</div></pre></td></tr></table></figure>
+<p>Then,</p>
+<pre><code>$ cd ../..
+$ tar cf vmmon.tar vmmon-only
+$ rm -rf vmmon-only # cleanup
+</code></pre><p>Rebuild the all modules:<br>    $ sudo vmware-modconfig –console –install-all</p>
 
       
     </div>
@@ -1104,14 +1191,14 @@ Starting program: /home/ohpato/c_cpp/divzero
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="search" name="q" results="0" placeholder="Suche">
     <input type="hidden" name="q" value="site:aintahydra.github.io">
   </form>
 </div>
 
   
 <div class="widget tag">
-  <h3 class="title">Categories</h3>
+  <h3 class="title">Kategorien</h3>
   <ul class="entry">
   
     <li><a href="/categories/ETC/">ETC</a><small>1</small></li>
@@ -1151,6 +1238,8 @@ Starting program: /home/ohpato/c_cpp/divzero
   
     <li><a href="/tags/compute-stick/">compute stick</a><small>2</small></li>
   
+    <li><a href="/tags/coq/">coq</a><small>1</small></li>
+  
     <li><a href="/tags/crawler/">crawler</a><small>1</small></li>
   
     <li><a href="/tags/ctag/">ctag</a><small>1</small></li>
@@ -1164,6 +1253,8 @@ Starting program: /home/ohpato/c_cpp/divzero
     <li><a href="/tags/gdb/">gdb</a><small>1</small></li>
   
     <li><a href="/tags/latex/">latex</a><small>1</small></li>
+  
+    <li><a href="/tags/proofgeneral/">proofgeneral</a><small>1</small></li>
   
     <li><a href="/tags/python/">python</a><small>1</small></li>
   

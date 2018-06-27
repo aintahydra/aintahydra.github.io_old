@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>latex-with-emacs | aintahydra - dont talk shit</title>
+  <title>proofgeneral-on-osx | aintahydra - dont talk shit</title>
   <meta name="author" content="aintahydra">
   
-  <meta name="description" content="Install necessary packagesInstall auctex (texmaker is another great option).
-$ apt install auctex texlive texlive-latex-extra 
-AUCTEXauctex should be ">
+  <meta name="description" content="Installation (coq and proof-general)$ brew install coq
+$ brew install proof-general
+Use$ proofgeneral
+Test(When a “.v” file is read, it automatically ">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="latex-with-emacs"/>
+  <meta property="og:title" content="proofgeneral-on-osx"/>
   <meta property="og:site_name" content="aintahydra - dont talk shit"/>
 
   
@@ -53,41 +54,42 @@ AUCTEXauctex should be ">
     <header>
       
         <div class="icon"></div>
-        <time datetime="2017-11-23T00:03:30.000Z"><a href="/2017/11/23/latex-with-emacs/">2017-11-23</a></time>
+        <time datetime="2018-06-26T16:28:25.000Z"><a href="/2018/06/27/proofgeneral-on-osx/">2018-06-27</a></time>
       
       
   
-    <h1 class="title">latex-with-emacs</h1>
+    <h1 class="title">proofgeneral-on-osx</h1>
   
 
     </header>
     <div class="entry">
       
-        <h1 id="Install-necessary-packages"><a href="#Install-necessary-packages" class="headerlink" title="Install necessary packages"></a>Install necessary packages</h1><p>Install auctex (texmaker is another great option).</p>
-<pre><code>$ apt install auctex texlive texlive-latex-extra 
-</code></pre><h1 id="AUCTEX"><a href="#AUCTEX" class="headerlink" title="AUCTEX"></a>AUCTEX</h1><p>auctex should be loaded automatically. If not, start it manually by</p>
-<pre><code>M-x tex-mode
-</code></pre><p>or, add the followings to ~/.emacs:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(setq TeX-auto-save t)</div><div class="line">(setq TeX-parse-self t)</div><div class="line">(setq TeX-save-query nil)</div><div class="line">;(setq TeX-PDF-mode t)</div></pre></td></tr></table></figure></p>
-<h1 id="For-USENIX-papers"><a href="#For-USENIX-papers" class="headerlink" title="For USENIX papers,"></a>For USENIX papers,</h1><ul>
-<li><a href="https://www.usenix.org/legacy/events/sec06/cfp/submit-sample.tex" target="_blank" rel="external">latex sample</a></li>
-<li><a href="https://www.usenix.org/conferences/author-resources/paper-templates" target="_blank" rel="external">latex template</a></li>
+        <h1 id="Installation-coq-and-proof-general"><a href="#Installation-coq-and-proof-general" class="headerlink" title="Installation (coq and proof-general)"></a>Installation (coq and proof-general)</h1><pre><code>$ brew install coq
+$ brew install proof-general
+</code></pre><h1 id="Use"><a href="#Use" class="headerlink" title="Use"></a>Use</h1><pre><code>$ proofgeneral
+</code></pre><h1 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h1><p>(When a “.v” file is read, it automatically changes to the “coq-mode”. Also, possible to change it manually by “M-x coq-mode”)</p>
+<p>Open a new file “test.v” and type an example(from the book “Software Foundations”)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Inductive day : Type :=</div><div class="line">| monday : day</div><div class="line">| tuesday : day</div><div class="line">| wednesday : day</div><div class="line">| thursday : day</div><div class="line">| friday : day</div><div class="line">| saturday : day</div><div class="line">| sunday : day.</div><div class="line"></div><div class="line">Definition next_day (d:day) : day :=</div><div class="line">  match d with</div><div class="line">  | monday =&gt; tuesday</div><div class="line">  | tuesday =&gt; wednesday</div><div class="line">  | wednesday =&gt; thursday</div><div class="line">  | thursday =&gt; friday</div><div class="line">  | friday =&gt; saturday</div><div class="line">  | saturday =&gt; sunday</div><div class="line">  | sunday =&gt; monday</div><div class="line">  end.</div><div class="line"></div><div class="line">Compute (next_day friday).</div></pre></td></tr></table></figure>
+<p>Now it’s ready to do interactive proof.</p>
+<p>Keys (Keyboard shortcuts: “C-h m”):</p>
+<ul>
+<li>C-c C-n : Next Step</li>
+<li>C-c C-ENTER : Go to the point</li>
+<li>C-c C-p : Display Proof State</li>
+<li>C-c C-t : Display Context</li>
+<li>C-c C-u : Undo Step</li>
+<li>C-c C-r : Retract Buffer</li>
 </ul>
-<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><p>for conveniences, </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"># SRC is the main latex file (file name only)</div><div class="line">SRC = paper</div><div class="line"></div><div class="line">all:	pdf</div><div class="line">	evince $&#123;SRC&#125;.pdf &amp;</div><div class="line"></div><div class="line"># rm -f $&#123;SRC&#125;.&#123;aux,bbl,blg,dvi,ent,log,pdf,ps&#125; doesn&apos;t work, weird</div><div class="line">clean:</div><div class="line">	rm -f *.aux; rm -f *.bbl; rm -f *.blg; rm -f *.dvi</div><div class="line">	rm -f *.ent; rm -f *.log; rm -f *.pdf; rm -f *.ps</div><div class="line"></div><div class="line">pdf:	dvi</div><div class="line">	dvipdf $&#123;SRC&#125;</div><div class="line"></div><div class="line">ps:	dvi</div><div class="line">	dvips -t a4 $&#123;SRC&#125;.dvi</div><div class="line"></div><div class="line">dvi:</div><div class="line">	latex $&#123;SRC&#125;</div><div class="line">	bibtex $&#123;SRC&#125;</div><div class="line">	latex $&#123;SRC&#125;</div><div class="line">	latex $&#123;SRC&#125;</div></pre></td></tr></table></figure>
+
       
     </div>
     <footer>
       
         
-  
-  <div class="categories">
-    <a href="/categories/emacs/">emacs</a>
-  </div>
-
         
   
   <div class="tags">
-    <a href="/tags/emacs/">emacs</a>, <a href="/tags/latex/">latex</a>, <a href="/tags/auctex/">auctex</a>
+    <a href="/tags/proofgeneral/">proofgeneral</a>, <a href="/tags/coq/">coq</a>
   </div>
 
         
@@ -130,7 +132,7 @@ AUCTEXauctex should be ">
   }(document, 'script', 'facebook-jssdk'));
 </script>
 
-<div class="fb-comments" data-href="http://aintahydra.github.io/2017/11/23/latex-with-emacs/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
+<div class="fb-comments" data-href="http://aintahydra.github.io/2018/06/27/proofgeneral-on-osx/index.html" data-num-posts="5" data-width="840" data-colorscheme="light"></div>
       
   
 </section>
